@@ -8,9 +8,9 @@ class SigninController < ApplicationController
     @user = User.new(user_paryams)
     if @user.save
       session[:user_id] = @user.id # 登録後すぐにログインさせる
-      # redirect_to root_path, notice: "アカウントを登録しました。"
+      redirect_to new_session_path, notice: "アカウントを登録しました。"
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_signin_path, alert: "this username is already used"
     end
   end
 
