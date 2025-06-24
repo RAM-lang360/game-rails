@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_19_130423) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_094118) do
+  create_table "join_users", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "room_name"
+    t.string "password_digest"
+    t.integer "host_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "join_id"
+    t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -27,5 +43,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_130423) do
     t.string "name", null: false
   end
 
+  add_foreign_key "join_users", "users"
+  add_foreign_key "rooms", "join_users", column: "join_id"
+  add_foreign_key "rooms", "users", column: "host_id"
   add_foreign_key "sessions", "users"
 end
