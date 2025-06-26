@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_25_123000) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_25_132000) do
   create_table "rooms", force: :cascade do |t|
     t.string "room_name"
     t.string "password_digest"
     t.integer "host_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["host_id"], name: "index_rooms_on_host_id", unique: true
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
 
@@ -35,10 +36,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_123000) do
     t.datetime "updated_at", null: false
     t.string "name", null: false
     t.integer "room_id"
+    t.boolean "user_status", default: false, null: false
     t.index ["room_id"], name: "index_users_on_room_id"
   end
 
   add_foreign_key "rooms", "users", column: "host_id"
   add_foreign_key "sessions", "users"
-  add_foreign_key "users", "rooms"
+  add_foreign_key "users", "rooms", on_delete: :nullify
 end

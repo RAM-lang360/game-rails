@@ -1,1 +1,17 @@
-<h1>test<h1>
+<%# 自身のユーザー名を一番上に表示 %>
+<% if current_user %>
+  <h3>あなたのユーザー名: <%= current_user.name %></h3>
+<% end %>
+
+<%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
+
+<h2>全ルーム一覧</h2>
+<ul>
+  <% @rooms.each do |room| %>
+    <li>
+      <strong>ルーム名:</strong> <%= room.room_name %><br>
+      <strong>ホスト:</strong> <%= User.find(room.host_id).name rescue '不明' %><br>
+      <strong>参加ユーザー:</strong> <%= User.where(room_id: room.id, user_status: false).map(&:name).join(", ") %><br>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,29 @@
+<h1>room作成ページ</h1>
+<% if current_user %>
+  <h3>あなたのユーザー名: <%= current_user.name %></h3>
+<% end %>
+<%= form_with(model: @room, url: lobby_index_path, local: true) do |f| %>
+  <% if @room && @room.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>エラーがあります:</h4>
+      <ul>
+        <% @room.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :room_name, 'ルーム名' %><br>
+    <%= f.text_field :room_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password, 'パスワード' %><br>
+    <%= f.password_field :password, class: 'form-control' %>
+  </div>
+
+  <%= f.submit '作成', class: 'btn btn-primary' %>
+<% end %>
+
