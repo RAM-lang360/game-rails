@@ -23,7 +23,9 @@ class LobbyController < ApplicationController
     end
   end
 
-  private
+  def show
+    @room = Room.find(params[:id])
+  end
 
   def room_params
     params.require(:room).permit(:room_name, :password)
