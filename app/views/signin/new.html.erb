@@ -1,20 +1,33 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="signin-page">
+  <%= display_flash_messages %>
 
-<%= form_with url: signin_path do |form| %>
-  <% if @user && @user.errors.any? %>
-    <div style="color: red; margin-bottom: 15px;">
-      <h4>エラーがあります:</h4>
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div class="signin-form-container">
+    <h1>Sign in</h1>
+    
+    <%= form_with url: signin_index_path, class: "signin-form" do |form| %>
+      <%= display_signin_errors(@user) %>
 
-  <%= form.text_field :name, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your name", value: params[:name] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+      <div class="form-group">
+        <%= label_tag :name, "ユーザー名", class: "form-label" %>
+        <%= signin_form_field(form, :text, :name, 
+                             autofocus: true, 
+                             autocomplete: "username", 
+                             placeholder: "ユーザー名を入力してください", 
+                             value: params[:name]) %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :password, "パスワード", class: "form-label" %>
+        <%= signin_form_field(form, :password, :password, 
+                             autocomplete: "current-password", 
+                             placeholder: "パスワードを入力してください", 
+                             maxlength: 72) %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "サインイン", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

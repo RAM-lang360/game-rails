@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get "signin/new", to: "signin#new", as: :signin
-  post "signin/new", to: "signin#create"
+  resources :signin
   resource :session
   resources :passwords, param: :token
   resources :lobby

@@ -24,7 +24,7 @@ class LobbyController < ApplicationController
       @user = User.find_by(id: current_user.id)
       @user.room_id = @room.id
       @user.save
-      redirect_to lobby_index_path, notice: "ルームを作成しました"
+      redirect_to lobby_path(@room), notice: "ルームを作成しました"
     else
       render :new, status: :unprocessable_entity
     end
@@ -63,7 +63,7 @@ class LobbyController < ApplicationController
       @user.room_id = @join_room.id
 
       if @user.save
-        redirect_to lobby_index_path, notice: "ルームに参加しました"
+        redirect_to lobby_path(@join_room), notice: "ルームを作成しました"
       else
         redirect_to lobby_index_path, alert: "参加に失敗しました"
       end

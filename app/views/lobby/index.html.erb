@@ -1,50 +1,44 @@
-<%# 自身のユーザー名を一番上に表示 %>
-<% if current_user %>
-  <h3>あなたのユーザー名: <%= current_user.name %></h3>
-<% end %>
-<% if !current_user%>
-  <h3>ログインしていません</h3>
-<% end %>
+<%# ユーザー状況表示 %>
+<div class="user-status">
+  <h3><%= current_user_status_display %></h3>
+</div>
 
-<%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
+<div class="lobby-actions">
+  <%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
+</div>
 
-<h2>全ルーム一覧</h2>
-<ul>
-  <% @rooms.each do |room| %>
-    <li>
-      <strong>ルーム名:</strong> <%= room.room_name %><br>
-      <strong>ホスト:</strong> <%= User.find(room.host_id).name rescue '不明' %><br>
-      <strong>参加ユーザー:</strong> <%= User.where(room_id: room.id, user_status: false).where.not(id: room.host_id).map(&:name).join(", ") %><br>
-    </li>
-  <% end %>
-</ul>
-
-<% if @rooms.empty? %>
-  <p>現在、ルームはありません。</p>
-<% end %>
-
-<h2>ルーム参加</h2>
-<%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
-  <% if @join_room && @join_room.errors.any? %>
-    <div class="alert alert-danger">
-      <h4>エラーがあります:</h4>
-      <ul>
-        <% @join_room.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+<section class="rooms-section">
+  <h2>全ルーム一覧</h2>
+  <% if @rooms.empty? %>
+    <p class="no-rooms">現在、ルームはありません。</p>
+  <% else %>
+    <div class="rooms-list">
+      <% @rooms.each do |room| %>
+        <div class="room-item">
+          <%= room_card(room) %>
+        </div>
+      <% end %>
     </div>
   <% end %>
+</section>
 
-  <div class="form-group">
-    <%= f.label :room_name, 'ルーム名' %><br>
-    <%= f.text_field :room_name, required: true, class: 'form-control' %>
-  </div>
+<section class="join-section">
+  <h2>ルーム参加</h2>
+  <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
+    <%= display_errors(@join_room) %>
 
-  <div class="form-group">
-    <%= f.label :room_password, 'パスワード' %><br>
-    <%= f.password_field :room_password,required: true, class: 'form-control' %>
-  </div>
+    <div class="form-group">
+      <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
+      <%= f.text_field :room_name, required: true, class: 'form-control' %>
+    </div>
 
-  <%= f.submit '参加', class: 'btn btn-primary' %>
-<% end %>
+    <div class="form-group">
+      <%= f.label :room_password, 'パスワード', class: 'form-label' %>
+      <%= f.password_field :room_password, required: true, class: 'form-control' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit '参加', class: 'btn btn-success' %>
+    </div>
+  <% end %>
+</section>
