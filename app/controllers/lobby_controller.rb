@@ -23,6 +23,7 @@ class LobbyController < ApplicationController
       # ルーム保存後にユーザーのroom_idを更新
       @user = User.find_by(id: current_user.id)
       @user.room_id = @room.id
+      @user.user_status = true # ホストとして設定
       @user.save
       redirect_to lobby_path(@room), notice: "ルームを作成しました"
     else

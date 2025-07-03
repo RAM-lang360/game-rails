@@ -1,10 +1,12 @@
 <%# ユーザー状況表示 %>
+
 <div class="user-status">
-  <h3><%= current_user_status_display %></h3>
+  <p><%= user_status %></p>
 </div>
 
 <div class="lobby-actions">
   <%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
+  <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
 </div>
 
 <section class="rooms-section">
@@ -16,6 +18,11 @@
       <% @rooms.each do |room| %>
         <div class="room-item">
           <%= room_card(room) %>
+          <% @users = room_participants(room) %>
+          <p class="room-participants">参加者:
+          <% @users.each do |user| %>
+            <%= user.name %></p>
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -25,7 +32,6 @@
 <section class="join-section">
   <h2>ルーム参加</h2>
   <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
-    <%= display_errors(@join_room) %>
 
     <div class="form-group">
       <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
@@ -41,4 +47,5 @@
       <%= f.submit '参加', class: 'btn btn-success' %>
     </div>
   <% end %>
+ 
 </section>

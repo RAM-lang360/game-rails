@@ -2,12 +2,11 @@
   <h1>ルーム作成</h1>
   
   <div class="user-info">
-    <h3><%= current_user_status_display %></h3>
+    <h3><%= user_status %></h3>
   </div>
 
   <div class="room-form-container">
     <%= form_with(model: @room, url: lobby_index_path, local: true, class: "room-form") do |f| %>
-      <%= display_errors(@room) %>
 
       <div class="form-group">
         <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
