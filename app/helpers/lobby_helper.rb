@@ -20,11 +20,12 @@ module LobbyHelper
 
   # 日時のフォーマット
   def format_datetime(datetime)
-    datetime&.strftime("%Y年%m月%d日 %H:%M") || "不明"
+    datetime&.strftime("%Y-%m-%d %H:%M:%S")|| "不明"
   end
 
   def back_room
-    @user= User.find_by(id: current_user.room_id)
-    lobby_path(@user.room_id) if @user
+    return "#" unless current_user&.room_id.present?
+
+    lobby_path(current_user.room_id)
   end
 end

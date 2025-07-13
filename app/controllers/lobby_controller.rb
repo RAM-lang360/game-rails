@@ -80,6 +80,16 @@ class LobbyController < ApplicationController
     @room = Room.find(params[:id])
   end
 
+  def destroy
+    @room = Room.find(params[:id])
+    if @room.host_id == current_user.id
+      @room.destroy
+      redirect_to lobby_index_path, notice: "ルームを削除しました"
+    else
+      redirect_to lobby_index_path, alert: "ルームの削除に失敗しました"
+    end
+  end
+  private
   def room_params
     params.require(:room).permit(:room_name, :password)
   end

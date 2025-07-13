@@ -4,8 +4,38 @@ class Room < ApplicationRecord
   belongs_to :host, class_name: "User", foreign_key: "host_id"
   # join_idカラムがJoinUserモデルを参照することを明示
   belongs_to :join_user, foreign_key: :join_id, optional: true
-  # null: false なので optional: true は不要
 
   validates :room_name, presence: true
   validates :password, presence: true
+
+  after_create_commit :broadcast_room_creation
+  after_destroy_commit :broadcast_room_deletion
+
+  private
+
+  def broadcast_room_creation
+    puts "ブロードキャストが実行された #{self.room_name}"
+    ActionCable.server.broadcast(
+      "display_rooms_channel",
+      {
+        action: "create",
+        room_id: self.id,
+        room_name: self.room_name,
+        host_name: self.host.name,
+        created_at: self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+      }
+    )
+  end
+
+  def broadcast_room_deletion
+    puts "ルーム削除をブロードキャスト #{self.room_name}"
+    ActionCable.server.broadcast(
+      "display_rooms_channel",
+      {
+        action: "delete",
+        room_id: self.id,
+        room_name: self.room_name
+      }
+    )
+  end
 end

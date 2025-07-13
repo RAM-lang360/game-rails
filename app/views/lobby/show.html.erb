@@ -1,3 +1,21 @@
-<h1>hello</h1>
+<h1>ルーム詳細</h1>
 
-<p><%= @room.room_name %></p>
+<div class="room-details">
+  <h2><%= @room.room_name %></h2>
+  <p>ホスト: <%= @room.host.name %></p>
+  <p>作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+</div>
+
+<div class="room-actions">
+  <% if current_user && current_user.id == @room.host_id %>
+    <%= button_to "ルームを削除", 
+                  lobby_path(@room), 
+                  method: :delete, 
+                  confirm: "本当にこのルームを削除しますか？", 
+                  class: "btn btn-danger",
+                  data: { turbo: false } %>
+  <% end %>
+  
+  <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary" %>
+</div>
+

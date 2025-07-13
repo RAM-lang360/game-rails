@@ -6,33 +6,32 @@
 
 <div class="lobby-actions">
   <%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
-  <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
+  <% if current_user&.room_id.present? %>
+    <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
+  <% end %>
 </div>
 
-<section class="rooms-section">
+<section class="rooms-section" id="lobby-rooms">
   <h2>全ルーム一覧</h2>
+  <div class="rooms-list" id="rooms-list">
+    <%# ルームが存在しない場合のメッセージ %>
   <% if @rooms.empty? %>
     <p class="no-rooms">現在、ルームはありません。</p>
   <% else %>
-    <div class="rooms-list">
+    <div class="rooms">
       <% @rooms.each do |room| %>
         <div class="room-item">
           <%= room_card(room) %>
-          <% @users = room_participants(room) %>
-          <p class="room-participants">参加者:
-          <% @users.each do |user| %>
-            <%= user.name %></p>
-          <% end %>
         </div>
       <% end %>
     </div>
   <% end %>
+  </div>
 </section>
 
 <section class="join-section">
   <h2>ルーム参加</h2>
   <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
-
     <div class="form-group">
       <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
       <%= f.text_field :room_name, required: true, class: 'form-control' %>
@@ -47,5 +46,4 @@
       <%= f.submit '参加', class: 'btn btn-success' %>
     </div>
   <% end %>
- 
 </section>
