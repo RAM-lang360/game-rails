@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resources :lobby
   post "lobby/join", to: "lobby#join", as: :join_lobby
-
+  get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

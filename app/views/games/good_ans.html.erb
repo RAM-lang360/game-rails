@@ -1,0 +1,103 @@
+<div class="game-container">
+  <h1>ゲーム開始</h1>
+  
+  <div class="room-info">
+    <h2>ルーム情報</h2>
+    <p><strong>ルーム名:</strong> <%= @room.room_name %></p>
+    <p><strong>ホスト:</strong> <%= @room.host.name %></p>
+    <p><strong>ルームID:</strong> <%= @room.id %></p>
+    <p><strong>作成日時:</strong> <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+  </div>
+  
+  <div class="current-user-info">
+    <h3>あなたの情報</h3>
+    <p><strong>ユーザー名:</strong> <%= current_user.name %></p>
+    <p><strong>参加状況:</strong> 
+      <% if current_user.id == @room.host_id %>
+        <span class="host-badge">ホスト</span>
+      <% else %>
+        <span class="participant-badge">参加者</span>
+      <% end %>
+    </p>
+  </div>
+  
+  <div class="game-actions">
+    <button class="btn btn-primary">ゲーム開始</button>
+    <%= link_to "ルームに戻る", lobby_path(@room), class: "btn btn-secondary" %>
+    <%= link_to "ルーム一覧", lobby_index_path, class: "btn btn-outline" %>
+  </div>
+</div>
+
+<style>
+  .game-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .room-info, .current-user-info {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  
+  .room-info h2, .current-user-info h3 {
+    margin-top: 0;
+    color: #495057;
+  }
+  
+  .host-badge {
+    background-color: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  
+  .participant-badge {
+    background-color: #007bff;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  
+  .game-actions {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #007bff;
+    border: 2px solid #007bff;
+  }
+  
+  .btn:hover {
+    opacity: 0.8;
+  }
+</style>
