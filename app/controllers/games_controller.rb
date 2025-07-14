@@ -8,6 +8,8 @@ class GamesController < ApplicationController
     end
 
     puts "ルームID: #{@room.id} の朝までそれ正解ゲームを開始します"
+
+    @user_names = User.where(room_id: @room.id).pluck(:name)
   end
 
   def quiz_battle
