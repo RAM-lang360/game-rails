@@ -78,6 +78,10 @@ class LobbyController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
+
+    if params[:back_room] == "true" && current_user.room_id == @room.id
+      broadcast_back_room
+    end
   end
 
   def destroy
@@ -92,5 +96,19 @@ class LobbyController < ApplicationController
   private
   def room_params
     params.require(:room).permit(:room_name, :password)
+  end
+
+  def broadcast_back_room
+    ActionCable.server.broadcast(
+      "back_room_#{@room.id}",
+      {
+        action: "redirect",
+        url: lobby_path(@room),
+        game_type: "back_room",
+        message: "ルーム部屋に移動します。"
+      }
+    )
+
+    puts "ルーム#{@room.id}の全ユーザーにgood_ansゲーム開始をブロードキャストしました"
   end
 end

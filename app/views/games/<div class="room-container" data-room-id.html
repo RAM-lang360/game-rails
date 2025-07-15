@@ -1,4 +1,4 @@
-<div class="room-container" data-good-ans-id="<%= @room.id %>">
+<div class="room-container" data-room-id="<%= @room.id %>">
   <div class="game-container">
     <h1>ゲーム開始</h1>
     
@@ -29,6 +29,7 @@
       <div class="game-actions">
         <button class="btn btn-primary">ゲーム開始</button>
         <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), class: "btn btn-secondary" %>
+        <%= link_to "ルーム一覧", lobby_index_path, class: "btn btn-outline" %>
       </div>
     <% end %>
   </div>
@@ -106,6 +107,7 @@
     border: none;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.2s ease;
   }
   
   .btn-primary {
@@ -113,9 +115,19 @@
     color: white;
   }
   
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+  }
+  
   .btn-secondary {
     background-color: #6c757d;
     color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #545b62;
+    transform: translateY(-1px);
   }
   
   .btn-outline {
@@ -124,7 +136,9 @@
     border: 2px solid #007bff;
   }
   
-  .btn:hover {
-    opacity: 0.8;
+  .btn-outline:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-1px);
   }
 </style>

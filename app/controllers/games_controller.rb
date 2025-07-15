@@ -27,13 +27,13 @@ class GamesController < ApplicationController
   end
 
   def broadcast_game_start
+    puts "ブロードキャストされてるよ"
     ActionCable.server.broadcast(
       "navigation_room_#{@room.id}",
       {
         action: "redirect",
         url: good_ans_game_path(@room),
-        game_type: "good_ans",
-        message: "ホストが朝までそれ正解を開始しました。ゲーム画面に移動します。"
+        message: "ホストが朝までそれ正解を開始しました"
       }
     )
 
