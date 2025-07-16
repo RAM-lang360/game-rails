@@ -16,6 +16,14 @@ document.addEventListener('turbo:load', () => {
     received(data) {
       // Called when there's incoming data on the websocket for this channel
       console.log("GoodAnsChannelからデータを受信しました:", data);
+      if(data.action === "draw"){
+      const themeId=document.getElementById("theme");
+      console.log("テーマID:", themeId);
+      if (themeId){
+        themeId.innerHTML = data.theme;
+      }
+    }
+      
     }
   });
   }

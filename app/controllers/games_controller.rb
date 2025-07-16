@@ -1,34 +1,32 @@
 class GamesController < ApplicationController
-  before_action :find_room # drawアクションが実行される前にテーマをロード
-  before_action :load_themes, only: [ :draw ]
+  before_action :find_room, only: [ :good_ans, :draw ]
+
   def good_ans
     # ホストがゲーム開始パラメータ付きでアクセスした場合のみブロードキャスト
     if params[:start_game] == "true" && current_user.id == @room.host_id
       broadcast_game_start
-
-      # セッションにテーマを初期化
+      # テーマをルームにjson形式で保存
       puts "ゲーム開始のためのテーマを初期化します"
       @themes = AnsTheme.pluck(:text).shuffle
+      @room.update_columns(good_ans_themes: @themes)
+      puts "ルーム情報: #{@room.inspect}"
     end
-  end
-
-  def load_themes
-    # セッションからテーマをロード
-    @themes = session["room_#{@room.id}_themes"]
-    puts "ロードされたテーマ: #{@themes.inspect}"
   end
   def draw
     # load_themes で @themes は既にロードされている
     # テーマをランダムに選択し、配列から削除
-    @drawn_theme = @themes.delete(@themes.sample)
 
-    # セッションのテーマを更新
-    session["room_#{@room.id}_themes"] = @themes
-
+    @drawn_theme = @room.good_ans_themes.first
+    if @drawn_theme.nil?
+      puts "利用可能なテーマがありません"
+      redirect_to lobby_path(@room, back_room: "true")
+    else
+    @remaining_themes = @room.good_ans_themes - [ @drawn_theme ]
+    @room.update_columns(good_ans_themes: @remaining_themes) # 更新されたテーマを保存
     puts "選択されたテーマ: #{@drawn_theme}"
-    # broadcast_draw
+    broadcast_draw
+    end
   end
-
   private
 
   def find_room
@@ -55,8 +53,7 @@ class GamesController < ApplicationController
       "good_ans_channel",
       {
         action: "draw",
-        theme: @drawn_theme,
-        remaining_themes: @themes
+        theme: @drawn_theme
       }
     )
     puts "ルーム#{@room.id}の全ユーザーに抽選結果をブロードキャストしました"

@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_15_111612) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_16_073224) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "ans_themes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -23,6 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_15_111612) do
     t.integer "host_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "good_ans_themes"
     t.index ["host_id"], name: "index_rooms_on_host_id", unique: true
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
