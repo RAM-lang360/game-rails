@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_16_073224) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_16_115240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,13 +20,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_073224) do
     t.string "text"
   end
 
+  create_table "good_ans_games", force: :cascade do |t|
+    t.bigint "room_id", null: false
+    t.jsonb "themes", default: []
+    t.string "status", default: "waiting"
+    t.string "current_theme"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_good_ans_games_on_room_id", unique: true
+  end
+
   create_table "rooms", force: :cascade do |t|
     t.string "room_name"
     t.string "password_digest"
     t.integer "host_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "good_ans_themes"
     t.index ["host_id"], name: "index_rooms_on_host_id", unique: true
     t.index ["room_name"], name: "index_rooms_on_room_name", unique: true
   end
@@ -50,6 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_073224) do
     t.index ["room_id"], name: "index_users_on_room_id"
   end
 
+  add_foreign_key "good_ans_games", "rooms"
   add_foreign_key "rooms", "users", column: "host_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "users", "rooms", on_delete: :nullify
