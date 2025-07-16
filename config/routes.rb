@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :lobby
+  post "games/:id/draw", to: "games#draw", as: :draw
   post "lobby/join", to: "lobby#join", as: :join_lobby
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
 

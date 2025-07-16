@@ -1,6 +1,5 @@
 module GamesHelper
   def display_users(user_names)
-    puts "testeeeeeeeeee" + user_names.inspect
     if user_names.present?
       # h2とulを配列に入れてsafe_joinで結合
       safe_join([

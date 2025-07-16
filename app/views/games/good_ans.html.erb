@@ -24,17 +24,27 @@
         <% end %>
       </p>
     </div>
-
     <% if current_user.id == @room.host_id %>
       <div class="game-actions">
         <button class="btn btn-primary">ゲーム開始</button>
         <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), class: "btn btn-secondary" %>
       </div>
     <% end %>
+
+    <div data-controller="toggle">
+      <button data-action="click->toggle#toggle">コンテンツを表示/非表示</button>
+      <div data-toggle-target="content" id="theme">
+      </div>
+  </div>
+</div>
   </div>
 </div>
 
 <style>
+  .hidden {
+  display: none;
+  }
+
   .game-container {
     max-width: 800px;
     margin: 0 auto;

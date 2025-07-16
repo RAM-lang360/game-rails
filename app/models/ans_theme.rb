@@ -1,0 +1,2 @@
+class AnsTheme < ApplicationRecord
+end
