@@ -1,20 +1,39 @@
 class GamesController < ApplicationController
   before_action :find_room
   before_action :find_or_create_game, only: [ :good_ans, :draw ]
-
+  before_action :find_good_ans_game, only: [:good_ans, :post]
   def good_ans
     if params[:start_game] == "true" && current_user.id == @room.host_id
       broadcast_game_start
 
       puts "ゲーム開始のためのテーマを初期化します"
-      @game.initialize_themes!
-      @game.update!(status: "playing")
-
-      puts "ゲームが正常に初期化されました: #{@game.themes.inspect}"
+      @good_ans_game.initialize_themes!
+      @good_ans_game.update!(status: "playing",answers: [])
+      puts "ゲームが初期化されました: #{@good_ans_game.inspect}"
     end
 
-    @user_names = User.where(room_id: @room.id).pluck(:name)
+    #もし間違ってリログした時でもお題とアンサーを表示してくれる
+    @current_theme=@good_ans_game.current_theme if @good_ans_game.current_theme.present?
+    @answers = @good_ans_game.answers if @good_ans_game.answers.present?
+
+    puts "ゲームの状態: #{@good_ans_game.status}"
+    puts "現在のお題: #{@current_theme}"
+    puts "回答一覧: #{@answers.inspect}"
+
   end
+
+  def post
+    if params[:content].blank?
+      render json: { success: false, error: "メッセージが空です" }, status: :unprocessable_entity
+    else
+      user_name = current_user.name
+      content = params[:content]
+
+      if @good_ans_game.add_user_answer_to_jsonb(user_name, content)
+      end
+    end
+  end
+
 
   def draw
     puts "=== DRAW ACTION START ==="
@@ -26,9 +45,6 @@ class GamesController < ApplicationController
     end
       drawn_theme = @game.draw_theme!
 
-      puts "選択されたテーマ: #{drawn_theme}"
-      puts "残りのテーマ数: #{@game.remaining_themes_count}"
-
       # ゲーム終了判定
       if @game.remaining_themes_count == 0
         @game.update!(status: "finished")
@@ -39,6 +55,9 @@ class GamesController < ApplicationController
 
   private
 
+  def find_good_ans_game
+    @good_ans_game = GoodAnsGame.find_or_create_by(room_id: @room.id)
+  end
   def find_room
     @room = Room.find(params[:id])
   end
@@ -61,7 +80,7 @@ class GamesController < ApplicationController
 
   def broadcast_draw
     ActionCable.server.broadcast(
-      "good_ans_channel",
+      "good_ans_channel_#{@room.id}",
       {
         action: "draw",
         theme: @game.current_theme,

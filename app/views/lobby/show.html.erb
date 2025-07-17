@@ -34,7 +34,8 @@
                     method: :delete, 
                     confirm: "本当にこのルームを削除しますか？", 
                     class: "btn btn-danger",
-                    data: { turbo: false } %>
+                    data: { turbo: false } %> 
+                    <%# これでこのユーザー以外にリダイレクト行くようにする %>
     <% end %>
     
     <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary" %>

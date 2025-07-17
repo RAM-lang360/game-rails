@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_16_115240) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_042717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_115240) do
     t.string "current_theme"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "answers", default: []
     t.index ["room_id"], name: "index_good_ans_games_on_room_id", unique: true
   end
 

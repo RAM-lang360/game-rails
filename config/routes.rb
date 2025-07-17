@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post "games/:id/draw", to: "games#draw", as: :draw
   post "lobby/join", to: "lobby#join", as: :join_lobby
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
-
+  post "games/:id/post", to: "games#post", as: :post_game
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
