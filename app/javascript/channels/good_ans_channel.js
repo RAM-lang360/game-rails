@@ -42,18 +42,12 @@ document.addEventListener('turbo:load', () => {
             console.warn("ID 'theme' を持つ要素が見つかりませんでした。");
           }
         }
-        // 他のアクション（例: 'answer_received'）もここに追加可能
-        if (data.action === "answer") {
-          // 回答を表示するロジック
-          console.log("回答を受信しました:", data.user_name, data.answer);
-          const answerElement = document.getElementById("answers");
-          if (answerElement) {
-            const newAnswer = document.createElement("div");
-            newAnswer.textContent = `${data.user_name}: ${data.answer}`;
-            answerElement.appendChild(newAnswer);
-            console.log("回答を表示しました:", data.user_name, data.answer);
-          } else {
-            console.warn("ID 'answers' を持つ要素が見つかりませんでした。");
+        
+        if (data.action === "show_answer") {
+          console.log("回答を表示する指示を受信しました。",data);
+          const answerContentElement = document.getElementById(data.content_id);
+          if (answerContentElement) {
+            answerContentElement.classList.remove("hidden");
           }
         }
       }

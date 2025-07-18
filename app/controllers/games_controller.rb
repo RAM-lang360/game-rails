@@ -34,6 +34,10 @@ class GamesController < ApplicationController
     end
   end
 
+  def show_answer
+  @content_id = params[:content_id]
+  broadcast_answer_show
+end
 
   def draw
     puts "=== DRAW ACTION START ==="
@@ -85,6 +89,17 @@ class GamesController < ApplicationController
         action: "draw",
         theme: @game.current_theme,
         remaining_themes: @game.remaining_themes_count
+      }
+    )
+  end
+
+  def broadcast_answer_show
+    puts "ブロードキャストされてるよddddddddddddddd"
+    ActionCable.server.broadcast(
+      "good_ans_channel_#{@room.id}",
+      {
+        action: "show_answer",
+        content_id: @content_id
       }
     )
   end

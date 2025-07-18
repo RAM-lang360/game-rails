@@ -51,7 +51,7 @@
       <h4>回答一覧</h4>
       <div class="answers-list">
         <%= turbo_stream_from "answers" %>
-         <%= render partial: "answers", locals: { answers: @answers } %>
+         <%= render partial: "answers", locals: { room_id: @room.id, answers: @answers, display_flag: false } %>
       </div>
     </div>
   </div>

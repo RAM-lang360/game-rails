@@ -56,7 +56,7 @@ def add_user_answer_to_jsonb(user_name, content)
       "answers", 
       target: "answers", # ターゲットのID
       partial: "games/answers",
-      locals: { answers: self.answers } # パーシャルに渡す変数
+      locals: { room_id: self.room_id, answers: self.answers}  # パーシャルに渡す変数
     )
   end
 end

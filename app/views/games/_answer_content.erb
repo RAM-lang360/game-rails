@@ -1,0 +1,13 @@
+
+<div class="answer-content">
+  <h3>回答内容</h3>
+  <p>ユーザー名: <%= user_name %></p>
+<% if show_answer_content %>
+    <div id="answer_content_<%= user_name.parameterize %>">
+        <%= answer_content %>
+    </div>
+    <% else %>
+    <div class="hidden" id="answer_content_<%= user_name.parameterize %>">
+        <%= answer_content %>
+    </div>
+    <% end %>

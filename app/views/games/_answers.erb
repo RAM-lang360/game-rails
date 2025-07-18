@@ -1,20 +1,27 @@
 <div class="answers-list" id="answers">
-  <h4>回答一覧</h4>
   
   <%# 回答が配列であり、かつ空でない場合にのみ表示 %>
-<% if answers.is_a?(Array) && answers.present? %>
-  <% answers.each_with_index do |answer_hash, index| %>
-    <% user_name = answer_hash.keys.first %>
-    <% answer_content = answer_hash.values.first %>
-    <div class="answer-item" id="answer_item_<%= index %>_<%= user_name.parameterize %>">
-      <p>
-        <strong><%= user_name %>:</strong> <%= answer_content %>
-      </p>
-    </div>
+  <% if answers.is_a?(Array) && answers.present? %>
+    <% answers.each_with_index do |answer_hash, index| %>
+      <% user_name = answer_hash.keys.first %>
+      <% answer_content = answer_hash.values.first %>
+      <div class="answer-item" id="answer_item_<%= index %>_<%= user_name.parameterize %>">
+        <p>
+          <strong><%= user_name %>:</strong>
+            <div class="hidden" id="answer_content_<%= user_name.parameterize %>"><%= answer_content %></div>
+          <%= button_to "回答を表示", show_answer_path(id: room_id, content_id: "answer_content_#{user_name.parameterize}"), remote: true %>
+        </p>
+      </div>
+    <% end %>
+  <% else %>
+    <%# 回答がまだない場合にのみ表示されるメッセージ %>
+    <p>まだ回答がありません。</p>
   <% end %>
-<% else %>
-  <%# 回答がまだない場合にのみ表示されるメッセージ %>
-  <p>まだ回答がありません。</p>
-<% end %>
 
 </div>
+
+<style>
+  .hidden {
+    display: none;
+  }
+</style>
