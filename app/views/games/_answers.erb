@@ -9,7 +9,9 @@
         <p>
           <strong><%= user_name %>:</strong>
             <div class="hidden" id="answer_content_<%= user_name.parameterize %>"><%= answer_content %></div>
-          <%= button_to "回答を表示", show_answer_path(id: room_id, content_id: "answer_content_#{user_name.parameterize}"), remote: true %>
+          <% if current_user.name === user_name %>
+            <%= button_to "回答を表示", show_answer_path(id: room_id, content_id: "answer_content_#{user_name.parameterize}"), remote: true %>
+          <% end %>
         </p>
       </div>
     <% end %>

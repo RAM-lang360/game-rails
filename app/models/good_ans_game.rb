@@ -5,27 +5,31 @@ class GoodAnsGame < ApplicationRecord
   
 
 def add_user_answer_to_jsonb(user_name, content)
-    # 回答内容が空かどうかをチェック
-    if content.blank?
-      errors.add(:answers, "メッセージが空です")
-      return false
-    end
-
-    # 新しい回答データをハッシュとして作成
-    # JSONB の制約に合わせて {"ユーザー名": "回答内容"} の形式にする
-    new_answer_entry = { user_name => content }
-
-    # 既存の配列に新しいハッシュを追加
-    self.answers << new_answer_entry
-
-    # モデルインスタンスを保存し、データベースに永続化
-    if save
-      broadcast_answer
-      true # 保存成功
-    else
-      false # 保存失敗 (バリデーションエラーなど)
-    end
+  if content.blank?
+    errors.add(:answers, "メッセージが空です")
+    return false
   end
+
+  # user_nameに紐づく既存の回答を探す
+  existing_answer_index = self.answers.find_index { |answer_entry| answer_entry.key?(user_name) }
+
+  new_answer_entry = { user_name => content }
+
+  if existing_answer_index # 既存の回答が見つかった場合
+    self.answers[existing_answer_index] = new_answer_entry # 上書き
+  else # 新しい回答の場合
+    self.answers << new_answer_entry # 追加
+  end
+
+  # puts "既存の回答者 (更新後): #{self.answers.map { |ans| ans.keys.first }.inspect}" # デバッグ用
+
+  if save
+    broadcast_answer
+    true
+  else
+    false
+  end
+end
 
 
   def draw_theme!

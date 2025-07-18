@@ -1,5 +1,9 @@
-class CreateAnswers < ActiveRecord::Migration[8.0]
-  def change
+class DropAnswersTable < ActiveRecord::Migration[8.0]
+  def up
+    drop_table :answers
+  end
+
+  def down
     create_table :answers do |t|
       t.references :good_ans_game, null: false, foreign_key: true
       t.string :user_name, null: false
@@ -8,7 +12,6 @@ class CreateAnswers < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    # インデックスを追加
     add_index :answers, [:good_ans_game_id, :submitted_at]
     add_index :answers, :user_name
   end
