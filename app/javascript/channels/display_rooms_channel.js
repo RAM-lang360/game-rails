@@ -28,6 +28,8 @@ document.addEventListener('turbo:load', () => {
           this.handleRoomCreation(data);
         } else if (data.action === "delete") {
           this.handleRoomDeletion(data);
+        }else {
+          console.warn("不明なアクション:", data.action);
         }
       },
 
@@ -81,7 +83,7 @@ document.addEventListener('turbo:load', () => {
         } else {
           console.log("削除対象のルームが見つかりません:", data.room_id);
         }
-      }
+      },
     });
   }
 });

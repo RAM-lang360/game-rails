@@ -80,7 +80,7 @@ class LobbyController < ApplicationController
     @room = Room.find(params[:id])
 
     if params[:back_room] == "true" && current_user.room_id == @room.id
-      broadcast_back_room
+      broadcast_back_room_from_game
     end
   end
 
@@ -89,6 +89,9 @@ class LobbyController < ApplicationController
     if @room.host_id == current_user.id
       @room.destroy
       redirect_to lobby_index_path, notice: "ルームを削除しました"
+      # ページ遷移
+      puts "---------------ルーム削除後のブロードキャストを実行します----------------"
+      broadcast_back_room_to_lobby
     else
       redirect_to lobby_index_path, alert: "ルームの削除に失敗しました"
     end
@@ -98,17 +101,26 @@ class LobbyController < ApplicationController
     params.require(:room).permit(:room_name, :password)
   end
 
-  def broadcast_back_room
+  def broadcast_back_room_from_game
     ActionCable.server.broadcast(
       "back_room_#{@room.id}",
       {
         action: "redirect",
         url: lobby_path(@room),
-        game_type: "back_room",
         message: "ルーム部屋に移動します。"
       }
     )
-
     puts "ルーム#{@room.id}の全ユーザーにgood_ansゲーム開始をブロードキャストしました"
+  end
+
+  def broadcast_back_room_to_lobby
+    ActionCable.server.broadcast(
+      "navigation_room_#{@room.id}",
+      {
+        action: "redirect",
+        url: lobby_index_path,
+        message: "ロビーに移動します。"
+      }
+    )
   end
 end
