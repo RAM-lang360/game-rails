@@ -1,46 +1,79 @@
-<div class="room-container" data-room-id="<%= @room.id %>">
-  <%= turbo_stream_from "join_user_channel" %>
-  <h1>ルーム詳細</h1>
-
-  <div class="room-details">
-    <h2><%= @room.room_name %></h2>
-    <p>ホスト: <%= @room.host.name %></p>
-    <p>作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
-    <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
-  </div>
-
-  <!-- クリック可能な画像エリア -->
-  <div class="room-image-section">
-    <% if current_user && current_user.id == @room.host_id %>
-      <%= link_to good_ans_game_path(@room, start_game: true), 
-                  class: "game-link", 
-                  data: { 
-                    turbo: false,
-                    confirm: "ゲームを開始しますか？ルーム内の全員がゲーム画面に移動します。" 
-                  } do %>
-        <%= image_tag "test.png", alt: "ゲーム開始", class: "game-start-image" %>
-        <p class="game-start-text">クリックしてゲーム開始</p>
-      <% end %>
-    <% else %>
-      <div class="game-disabled">
-        <%= image_tag "test.png", alt: "ゲーム開始", class: "game-start-image disabled" %>
-        <p class="game-start-text disabled">ホストのみゲーム開始可能</p>
+<div class="auth-page">
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <h1>With Board</h1>
+    <div class="hamburger-menu" onclick="toggleUserPopup()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </div>
+    <div class="user-popup" id="userPopup">
+      <div class="user-info">
+        <%= user_status %>
       </div>
-    <% end %>
+      <%= link_to "ログアウト", logout_path, 
+                method: :delete, 
+                class: "popup-logout",
+                data: { 
+                  turbo_method: :delete,
+                  confirm: "ログアウトしますか？" 
+                } %>
+    </div>
   </div>
 
-  <div class="room-actions">
-    <% if current_user && current_user.id == @room.host_id %>
-      <%= button_to "ルームを削除", 
-                    lobby_path(@room), 
+  <div class="container">
+    <div class="room-container" data-room-id="<%= @room.id %>">
+      <%= turbo_stream_from "join_user_channel" %>
+      <h1>ルーム詳細</h1>
+
+      <div class="room-details">
+        <h2><%= @room.room_name %></h2>
+        <p>ホスト: <%= @room.host.name %></p>
+        <p>作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+        <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
+      </div>
+
+      <!-- クリック可能な画像エリア -->
+      <div class="room-image-section">
+        <% if current_user && current_user.id == @room.host_id %>
+          <%= link_to good_ans_game_path(@room, start_game: true), 
+                      class: "game-link", 
+                      data: { 
+                        turbo: false,
+                        confirm: "ゲームを開始しますか？ルーム内の全員がゲーム画面に移動します。" 
+                      } do %>
+            <%= image_tag "test.png", alt: "ゲーム開始", class: "game-start-image" %>
+            <p class="game-start-text">クリックしてゲーム開始</p>
+          <% end %>
+        <% else %>
+          <div class="game-disabled">
+            <%= image_tag "test.png", alt: "ゲーム開始", class: "game-start-image disabled" %>
+            <p class="game-start-text disabled">ホストのみゲーム開始可能</p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="room-actions">
+        <% if current_user && current_user.id == @room.host_id %>
+          <%= button_to "ルームを削除", 
+                        lobby_path(@room), 
+                        method: :delete, 
+                        confirm: "本当にこのルームを削除しますか？", 
+                        class: "btn btn-danger",
+                        data: { turbo: false } %> 
+        <% end %>
+        
+        <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary btn-large" %>
+        <%= link_to "ルームから抜ける", 
+                    logout_room_path(@room.id), 
                     method: :delete, 
-                    confirm: "本当にこのルームを削除しますか？", 
                     class: "btn btn-danger",
-                    data: { turbo: false } %> 
-                    <%# これでこのユーザー以外にリダイレクト行くようにする %>
-    <% end %>
-    
-    <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary" %>
+                    data: { 
+                      turbo_method: :delete,
+                      confirm: "本当にルームから抜けますか？" 
+                    } %>
+      </div>
+    </div>
   </div>
 </div>
 

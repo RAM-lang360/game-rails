@@ -17,24 +17,28 @@ class Room < ApplicationRecord
   private
 
   def broadcast_room_creation
-    rooms= Room.all
-    Turbo::StreamsChannel.broadcast_replace_to(
-      "display_rooms",
-      target: "lobby-rooms",
-      partial: "lobby/rooms_content",
-      locals: { rooms: rooms }
+    puts "ブロードキャストが実行された #{self.room_name}"
+    ActionCable.server.broadcast(
+      "display_rooms_channel",
+      {
+        action: "create",
+        room_id: self.id,
+        room_name: self.room_name,
+        host_name: self.host.name,
+        created_at: self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+      }
     )
-    puts "ルーム作成をブロードキャスト #{self.room_name}"
   end
 
   def broadcast_room_deletion
-    rooms= Room.all
-    Turbo::StreamsChannel.broadcast_replace_to(
-      "display_rooms",
-      target: "lobby-rooms",
-      partial: "lobby/rooms_content",
-      locals: { rooms: rooms }
+    puts "ルーム削除をブロードキャスト #{self.room_name}"
+    ActionCable.server.broadcast(
+      "display_rooms_channel",
+      {
+        action: "delete",
+        room_id: self.id,
+        room_name: self.room_name
+      }
     )
-    puts "ルーム作成をブロードキャスト #{self.room_name}"
   end
 end

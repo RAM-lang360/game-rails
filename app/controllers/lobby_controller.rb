@@ -45,47 +45,58 @@ class LobbyController < ApplicationController
   def join
     @join_room = Room.find_by(room_name: params[:room][:room_name])
     unless @join_room
+      puts "ルームが見つかりませんでした"
       @rooms = Room.all
       @room = Room.new
       @join_room = Room.new
       @join_room.errors.add(:base, "指定されたルームが見つかりません")
-      render :index, status: :unprocessable_entity
+      render :join_room, status: :unprocessable_entity
       return
     end
 
     # ユーザーが既に他のルームに参加している場合のチェック
     if current_user.room_id.present? && current_user.room_id != @join_room.id
+      puts "ユーザーは既に他のルームに参加しています"
       @rooms = Room.all
       @room = Room.new
       @temp_room = Room.new
       @temp_room.errors.add(:base, "あなたは既に他のルームに参加しています")
       @join_room = @temp_room
-      render :index, status: :unprocessable_entity
+      render :join_room, status: :unprocessable_entity
       return
     end
 
     # 既に同じルームに参加している場合のチェック
-    if current_user.room_id == @join_room.id || current_user.room_id == @join_room.host_id
-      redirect_to lobby_index_path, notice: "既にこのルームに参加済みです"
+    if current_user.room_id == @join_room.id
+      puts "ユーザーは既にこのルームに参加しています"
+      @rooms = Room.all
+      @room = Room.new
+      @join_room.errors.add(:base, "既にこのルームに参加済みです")
+      render :join_room, status: :unprocessable_entity
       return
     end
 
     if @join_room.authenticate(params[:room][:room_password])
+      puts "ルーム参加認証成功"
       @user = User.find_by(id: current_user.id)
       @user.room_id = @join_room.id
 
       if @user.save
         puts "------------------------------------erjpi参加者を更新します"
         @user.broadcast_join_user_content
-        redirect_to lobby_path(@join_room), notice: "ルームを作成しました"
+        redirect_to lobby_path(@join_room), notice: "ルームに参加しました"
       else
-        redirect_to lobby_index_path, alert: "参加に失敗しました"
+        @rooms = Room.all
+        @room = Room.new
+        @join_room.errors.add(:base, "参加に失敗しました。管理者に連絡してください")
+        render :join_room, status: :unprocessable_entity
       end
     else
       @rooms = Room.all
       @room = Room.new
       @join_room.errors.add(:base, "ルーム名またはパスワードが間違っています")
-      render :index, status: :unprocessable_entity
+      puts "エラーーーーーーーーーーーー#{@join_room.errors.full_messages.join(", ")}"
+      render :join_room, status: :unprocessable_entity
     end
   end
 
@@ -113,6 +124,25 @@ class LobbyController < ApplicationController
     redirect_to sessions_path, notice: "ログアウトしました"
   end
 
+  def logout_room
+    puts "ルームからのログアウト処理を開始します"
+    @room = Room.find(params[:id])
+    puts "現在のユーザーのルームID: #{current_user.room_id}, ルームID: #{@room.id}, ユーザーステータス: #{current_user.user_status}"
+    if current_user.room_id == @room.id
+      @user = User.find_by(id: current_user.id)
+      @user.room_id = nil
+      if @user.save
+        puts "ルームからのログアウト成功"
+        redirect_to lobby_index_path, notice: "ルームから退出しました"
+      else
+        puts "ルームからのログアウト失敗"
+        redirect_to lobby_path(@room), alert: "ルームからの退出に失敗しました"
+      end
+    else
+      puts "ユーザーはこのルームに参加していません"
+      redirect_to lobby_index_path, alert: "このルームに参加していません"
+    end
+  end
 
   private
 

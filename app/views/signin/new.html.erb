@@ -1,44 +1,53 @@
-<div class="signin-container">
-  <h1>新規登録</h1>
+<div class="auth-page">
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <h1>With Board</h1>
+  </div>
 
-  <%= form_with model: @user, url: signin_index_path, local: true do |form| %>
-    <% if @user.errors.any? %>
-      <div class="error-messages">
-        <ul>
-          <% @user.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+  <div class="auth-container">
+    <div class="signin-container">
+      <h1>新規登録</h1>
+
+      <%= form_with model: @user, url: signin_index_path, local: true do |form| %>
+        <% if @user.errors.any? %>
+          <div class="error-messages">
+            <ul>
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= form.label :name, "ユーザー名", class: "form-label" %>
+          <%= form.text_field :name, required: true, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :email, "メールアドレス", class: "form-label" %>
+          <%= form.email_field :email, required: true, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :password, "パスワード", class: "form-label" %>
+          <%= form.password_field :password, required: true, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :password_confirmation, "パスワード確認", class: "form-label" %>
+          <%= form.password_field :password_confirmation, required: true, class: "form-control" %>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit "登録", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <div class="signin-links">
+        <%= link_to "ログインはこちら", new_session_path %>
       </div>
-    <% end %>
-
-    <div class="form-group">
-      <%= form.label :name, "ユーザー名", class: "form-label" %>
-      <%= form.text_field :name, required: true, class: "form-control" %>
     </div>
-
-    <div class="form-group">
-      <%= form.label :email, "メールアドレス", class: "form-label" %>
-      <%= form.email_field :email, required: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :password, "パスワード", class: "form-label" %>
-      <%= form.password_field :password, required: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :password_confirmation, "パスワード確認", class: "form-label" %>
-      <%= form.password_field :password_confirmation, required: true, class: "form-control" %>
-    </div>
-
-    <div class="form-actions">
-      <%= form.submit "登録", class: "btn btn-primary" %>
-    </div>
-  <% end %>
-
-  <div class="signin-links">
-    <%= link_to "ログインはこちら", new_session_path %>
   </div>
 </div>
 

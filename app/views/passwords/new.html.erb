@@ -1,19 +1,28 @@
-<h1>パスワードリセット</h1>
+<div class="auth-page">
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <h1>With Board</h1>
+  </div>
 
-<div class="password-reset-container">
-  <%= form_with url: passwords_path, local: true do |form| %>
-    <div class="form-group">
-      <%= form.label :email, "メールアドレス", class: "form-label" %>
-      <%= form.email_field :email, required: true, class: "form-control", 
-                          placeholder: "登録時のメールアドレスを入力してください" %>
+  <div class="auth-container">
+    <div class="password-container">
+      <h1>パスワードリセット</h1>
+
+      <%= form_with url: passwords_path, local: true do |form| %>
+        <div class="form-group">
+          <%= form.label :email, "メールアドレス", class: "form-label" %>
+          <%= form.email_field :email, required: true, class: "form-control", 
+                              placeholder: "登録時のメールアドレスを入力してください" %>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit "パスワードリセット", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+
+      <div class="password-links">
+        <%= link_to "ログインに戻る", new_session_path %>
+      </div>
     </div>
-
-    <div class="form-actions">
-      <%= form.submit "パスワードリセット", class: "btn btn-primary" %>
-    </div>
-  <% end %>
-
-  <div class="signin-links">
-    <%= link_to "ログインに戻る", new_session_path %>
   </div>
 </div>

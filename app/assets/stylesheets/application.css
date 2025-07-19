@@ -388,6 +388,88 @@ body {
 }
 
 /* ==========================================================================
+   Join Room Container
+   ========================================================================== */
+
+.join-room-container {
+  background-color: white;
+  border: 2px solid #007BFF;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.join-room-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Join room specific button styling */
+.join-room-container .btn-primary {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.join-room-container .btn-primary:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.join-room-container .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary link styling for join room */
+.join-room-container .link-secondary {
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.join-room-container .link-secondary:hover {
+  color: #007BFF;
+  text-decoration: underline;
+}
+
+/* Responsive design for join room */
+@media (max-width: 768px) {
+  .join-room-container {
+    padding: 30px 25px;
+    margin: 0 15px;
+  }
+  
+  .join-room-container h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .join-room-container {
+    padding: 25px 20px;
+  }
+  
+  .join-room-container h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ==========================================================================
    Responsive Design
    ========================================================================== */
 
@@ -442,5 +524,277 @@ body {
   
   .top-banner h1 {
     font-size: 1.8rem;
+  }
+}
+
+/* ==========================================================================
+   Authentication Pages (signin, sessions, passwords)
+   ========================================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signin-container,
+.session-container,
+.password-container {
+  background-color: white;
+  border: 2px solid #007BFF;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.signin-container h1,
+.session-container h1,
+.password-container h1 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.form-actions .btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.error-messages {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.error-messages ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #721c24;
+}
+
+.error-messages li {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.signin-links,
+.session-links,
+.password-links {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.signin-links a,
+.session-links a,
+.password-links a {
+  color: #007BFF;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.signin-links a:hover,
+.session-links a:hover,
+.password-links a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Auth page specific adjustments */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 20px 15px;
+  }
+  
+  .signin-container,
+  .session-container,
+  .password-container {
+    padding: 30px 20px;
+  }
+  
+  .signin-container h1,
+  .session-container h1,
+  .password-container h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ==========================================================================
+   Room Actions (for show page)
+   ========================================================================== */
+
+.room-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.room-actions .btn {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  min-width: 160px;
+  transition: all 0.2s ease;
+}
+
+.room-actions .btn-large {
+  padding: 18px 40px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  min-width: 200px;
+  background-color: #007BFF;
+  color: white;
+  border: 2px solid #007BFF;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.room-actions .btn-large:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.room-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.room-container h1 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 15px;
+}
+
+.room-details {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid #dee2e6;
+}
+
+.room-details h2 {
+  color: #007BFF;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.room-details p {
+  color: #495057;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Responsive design for room show page */
+@media (max-width: 768px) {
+  .room-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .room-actions .btn {
+    width: 80%;
+    max-width: 250px;
+  }
+  
+  .room-actions .btn-large {
+    width: 90%;
+    max-width: 300px;
+    padding: 16px 30px;
+    font-size: 1.2rem;
+  }
+  
+  .room-container {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .room-container h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-actions .btn-large {
+    width: 95%;
+    padding: 14px 25px;
+    font-size: 1.1rem;
+  }
+  
+  .room-container {
+    padding: 15px;
+  }
+  
+  .room-container h1 {
+    font-size: 1.6rem;
   }
 }

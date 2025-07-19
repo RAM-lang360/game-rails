@@ -9,9 +9,13 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :logout
 
   # 特定のlobbyルートをresources :lobbyより前に配置
-  post "lobby/join", to: "lobby#join", as: :join_lobby
+  post "lobby/join", to: "lobby#join", as: :join
   get "lobby/join_room", to: "lobby#join_room", as: :join_room
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
+
+  # logout_roomルートをGETとDELETEの両方に対応
+  get "lobby/:id/logout_room", to: "lobby#logout_room", as: :logout_room
+  delete "lobby/:id/logout_room", to: "lobby#logout_room"
 
   # resources :lobbyを後に配置
   resources :lobby

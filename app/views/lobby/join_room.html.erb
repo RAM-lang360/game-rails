@@ -1,22 +1,62 @@
-<section class="join-section">
-  <h2>ルーム参加</h2>
-  <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary" %>
-  <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
-    <div class="form-group">
-      <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
-      <%= f.text_field :room_name, required: true, class: 'form-control', value: @join_room.room_name %>
+<div class="auth-page">
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <h1>With Board</h1>
+    <div class="hamburger-menu" onclick="toggleUserPopup()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
     </div>
+    <div class="user-popup" id="userPopup">
+      <div class="user-info">
+        <%= user_status %>
+      </div>
+      <%= link_to "ログアウト", logout_path, 
+                method: :delete, 
+                class: "popup-logout",
+                data: { 
+                  turbo_method: :delete,
+                  confirm: "ログアウトしますか？" 
+                } %>
+    </div>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :room_password, 'パスワード', class: 'form-label' %>
-      <%= f.password_field :room_password, required: true, class: 'form-control' %>
-    </div>
+  <div class="auth-container">
+    <div class="join-room-container">
+      <h1>ルーム参加</h1>
 
-    <div class="form-actions">
-      <%= f.submit '参加', class: 'btn btn-success' %>
+      <%= form_with(model: @join_room, url: join_path, local: true) do |f| %>
+        <% if @join_room.errors.any? %>
+          <div class="error-messages">
+            <ul>
+              <% @join_room.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
+          <%= f.text_field :room_name, required: true, class: 'form-control', value: @join_room.room_name %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :room_password, 'パスワード', class: 'form-label' %>
+          <%= f.password_field :room_password, required: true, class: 'form-control' %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit '参加', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+
+      <div class="auth-links">
+        <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "link-secondary" %>
+      </div>
     </div>
-  <% end %>
-</section>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,8 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
   if (roomName) {
     const roomNameField = document.querySelector('input[name="room[room_name]"]');
     if (roomNameField && !roomNameField.value) {
-      roomNameField.value = roomName;
+      roomNameField.value = decodeURIComponent(roomName);
     }
+  }
+});
+
+// ハンバーガーメニューの機能
+function toggleUserPopup() {
+  const popup = document.getElementById('userPopup');
+  popup.classList.toggle('show');
+}
+
+// ポップアップ外をクリックした時に閉じる
+document.addEventListener('click', function(event) {
+  const popup = document.getElementById('userPopup');
+  const hamburger = document.querySelector('.hamburger-menu');
+  
+  if (popup && !popup.contains(event.target) && !hamburger.contains(event.target)) {
+    popup.classList.remove('show');
   }
 });
 </script>
