@@ -1,9 +1,19 @@
-<h1>Forgot your password?</h1>
+<h1>パスワードリセット</h1>
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<div class="password-reset-container">
+  <%= form_with url: passwords_path, local: true do |form| %>
+    <div class="form-group">
+      <%= form.label :email, "メールアドレス", class: "form-label" %>
+      <%= form.email_field :email, required: true, class: "form-control", 
+                          placeholder: "登録時のメールアドレスを入力してください" %>
+    </div>
 
-<%= form_with url: passwords_path do |form| %>
-  <%= form.text_field :name, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your name", value: params[:name] %><br>
-  <%= form.email_field :email, required: true, autocomplete: "email", placeholder: "Enter your email", value: params[:email] %><br>
-  <%= form.submit "Email reset instructions" %>
-<% end %>
+    <div class="form-actions">
+      <%= form.submit "パスワードリセット", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <div class="signin-links">
+    <%= link_to "ログインに戻る", new_session_path %>
+  </div>
+</div>

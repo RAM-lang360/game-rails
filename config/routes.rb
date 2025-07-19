@@ -1,14 +1,26 @@
 Rails.application.routes.draw do
+  # メールアナウンスデバック用
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   resources :signin
   resource :session
   resources :passwords, param: :token
-  resources :lobby
+
+  # ログアウトルートを先に配置
   delete "logout", to: "sessions#destroy", as: :logout
+
+  # 特定のlobbyルートをresources :lobbyより前に配置
   post "lobby/join", to: "lobby#join", as: :join_lobby
+  get "lobby/join_room", to: "lobby#join_room", as: :join_room
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
+
+  # resources :lobbyを後に配置
+  resources :lobby
+
+  # gamesルート
   post "games/:id/draw", to: "games#draw", as: :draw
   post "games/:id/post", to: "games#post", as: :post_game
   post "games/:id/show_answer", to: "games#show_answer", as: :show_answer
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

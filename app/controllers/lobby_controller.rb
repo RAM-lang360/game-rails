@@ -33,6 +33,13 @@ class LobbyController < ApplicationController
     end
   end
 
+  def join_room
+    @join_room = Room.new
+    @rooms = Room.all
+    @room = Room.new
+    # ルーム参加のためのフォームを表示
+  end
+
   def join
     @join_room = Room.find_by(room_name: params[:room][:room_name])
     unless @join_room

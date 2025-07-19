@@ -1,0 +1,19 @@
+<section class="join-section">
+  <h2>ルーム参加</h2>
+  <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "btn btn-secondary" %>
+  <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
+    <div class="form-group">
+      <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
+      <%= f.text_field :room_name, required: true, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :room_password, 'パスワード', class: 'form-label' %>
+      <%= f.password_field :room_password, required: true, class: 'form-control' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit '参加', class: 'btn btn-success' %>
+    </div>
+  <% end %>
+</section>

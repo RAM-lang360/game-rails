@@ -6,8 +6,10 @@ class PasswordsController < ApplicationController
   end
 
   def create
-    if user = User.find_by(name: params[:name])
-      PasswordsMailer.reset(@email).deliver_later
+    if user = User.find_by(email: params[:email])
+      puts "ユーザーが見つかりました: #{user.inspect}"
+      puts "リセットメールを送ります"
+      PasswordsMailer.reset(user).deliver_later
     end
 
     redirect_to new_session_path, notice: "Password reset instructions sent (if user with that email address exists)."
