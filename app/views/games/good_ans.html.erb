@@ -51,7 +51,8 @@
       <h4>回答一覧</h4>
       <div class="answers-list">
         <%= turbo_stream_from "answers" %>
-         <%= render partial: "answers", locals: { room_id: @room.id, answers: @answers, display_flag: false } %>
+          <%= render partial: "answers", locals: { room_id: @room.id, answers: @answers, display_flag: false } %>
+          <%= button_to "自身の解答を表示", show_answer_path(id: @room.id, content_id: "answer_content_#{current_user.name}"), remote: true %>
       </div>
     </div>
   </div>
