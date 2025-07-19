@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :lobby
-  post "games/:id/draw", to: "games#draw", as: :draw
+  delete "logout", to: "sessions#destroy", as: :logout
   post "lobby/join", to: "lobby#join", as: :join_lobby
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
+  post "games/:id/draw", to: "games#draw", as: :draw
   post "games/:id/post", to: "games#post", as: :post_game
   post "games/:id/show_answer", to: "games#show_answer", as: :show_answer
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

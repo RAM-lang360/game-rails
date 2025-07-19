@@ -98,6 +98,13 @@ class LobbyController < ApplicationController
       redirect_to lobby_index_path, alert: "ルームの削除に失敗しました"
     end
   end
+
+  def logout
+    Current.session&.destroy
+    redirect_to sessions_path, notice: "ログアウトしました"
+  end
+
+
   private
 
   def find_room

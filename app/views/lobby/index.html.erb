@@ -9,6 +9,13 @@
   <% if current_user&.room_id.present? %>
     <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
   <% end %>
+    <%= link_to "ログアウト", logout_path, 
+              method: :delete, 
+              class: "btn btn-danger",
+              data: { 
+                turbo_method: :delete,
+                confirm: "ログアウトしますか？" 
+   } %>
 </div>
 
 <section class="rooms-section" id="lobby-rooms">

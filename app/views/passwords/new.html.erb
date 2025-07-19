@@ -4,5 +4,6 @@
 
 <%= form_with url: passwords_path do |form| %>
   <%= form.text_field :name, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your name", value: params[:name] %><br>
+  <%= form.email_field :email, required: true, autocomplete: "email", placeholder: "Enter your email", value: params[:email] %><br>
   <%= form.submit "Email reset instructions" %>
 <% end %>
