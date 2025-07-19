@@ -35,6 +35,8 @@ class LobbyController < ApplicationController
 
   def join_room
     @join_room = Room.new
+    # URLパラメータからルーム名を取得して初期値として設定
+    @join_room.room_name = params[:room_name] if params[:room_name].present?
     @rooms = Room.all
     @room = Room.new
     # ルーム参加のためのフォームを表示

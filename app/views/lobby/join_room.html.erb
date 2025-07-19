@@ -4,7 +4,7 @@
   <%= form_with(model: @join_room, url: join_lobby_path, local: true) do |f| %>
     <div class="form-group">
       <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
-      <%= f.text_field :room_name, required: true, class: 'form-control' %>
+      <%= f.text_field :room_name, required: true, class: 'form-control', value: @join_room.room_name %>
     </div>
 
     <div class="form-group">
@@ -17,3 +17,18 @@
     </div>
   <% end %>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // URLパラメータからルーム名を取得
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomName = urlParams.get('room_name');
+  
+  if (roomName) {
+    const roomNameField = document.querySelector('input[name="room[room_name]"]');
+    if (roomNameField && !roomNameField.value) {
+      roomNameField.value = roomName;
+    }
+  }
+});
+</script>

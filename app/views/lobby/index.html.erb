@@ -1,24 +1,46 @@
-<%# ユーザー状況表示 %>
-
-<div class="user-status">
-  <p><%= user_status %></p>
-</div>
-
-<div class="lobby-actions">
-  <%= link_to 'ルーム作成', new_lobby_path, class: 'btn btn-primary' %>
-  <%= link_to 'ルーム参加', join_room_path, class: 'btn btn-secondary' %>
-  <% if current_user&.room_id.present? %>
-    <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
-  <% end %>
+<!-- Top Banner -->
+<div class="top-banner">
+  <h1>With Board</h1>
+  <div class="hamburger-menu" onclick="toggleUserPopup()">
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+    <div class="hamburger-line"></div>
+  </div>
+  <div class="user-popup" id="userPopup">
+    <div class="user-info">
+      <%= user_status %>
+    </div>
     <%= link_to "ログアウト", logout_path, 
               method: :delete, 
-              class: "btn btn-danger",
+              class: "popup-logout",
               data: { 
                 turbo_method: :delete,
                 confirm: "ログアウトしますか？" 
-   } %>
+              } %>
+  </div>
 </div>
-<%= turbo_stream_from "display_rooms" %>
-<%= render 'lobby/rooms_content', rooms: @rooms %>
 
+<div class="container">
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    <!-- Room List Container -->
+    <div class="content-area room-list-container">
+      <%= turbo_stream_from "display_rooms" %>
+      <%= render 'rooms_content', rooms: @rooms %>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="lobby-actions">
+    <% if current_user&.room_id.present? %>
+      <%= link_to "ルームに戻る", back_room, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <!-- Bottom Buttons -->
+  <div class="bottom-buttons">
+    <%= link_to '部屋を作る', new_lobby_path, class: 'create-room-button' %>
+    <%= link_to '部屋に入る', join_room_path, class: 'enter-room-button' %>
+  </div>
+</div>
 

@@ -28,14 +28,13 @@ class Room < ApplicationRecord
   end
 
   def broadcast_room_deletion
-    puts "ルーム削除をブロードキャスト #{self.room_name}"
-    ActionCable.server.broadcast(
-      "display_rooms_channel",
-      {
-        action: "delete",
-        room_id: self.id,
-        room_name: self.room_name
-      }
+    rooms= Room.all
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "display_rooms",
+      target: "lobby-rooms",
+      partial: "lobby/rooms_content",
+      locals: { rooms: rooms }
     )
+    puts "ルーム作成をブロードキャスト #{self.room_name}"
   end
 end
