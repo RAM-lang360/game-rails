@@ -1,0 +1,11 @@
+<div id="join_user_content">
+  <p>参加者: 
+    <% if join_user.present? %>
+      <% join_user.each do |user| %>
+        <span class="participant"><%= user %></span>
+      <% end %>
+    <% else %>
+      <span class="no-participants">参加者はいません</span>
+    <% end %>
+  </p>
+  </div>

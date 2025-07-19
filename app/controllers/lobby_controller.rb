@@ -1,4 +1,6 @@
 class LobbyController < ApplicationController
+  before_action :find_room, only: [ :show, :destroy ]
+  before_action :find_join_user, only: [ :show ]
   def index
     @rooms = Room.all
     @room = Room.new
@@ -64,6 +66,8 @@ class LobbyController < ApplicationController
       @user.room_id = @join_room.id
 
       if @user.save
+        puts "------------------------------------erjpi参加者を更新します"
+        @user.broadcast_join_user_content
         redirect_to lobby_path(@join_room), notice: "ルームを作成しました"
       else
         redirect_to lobby_index_path, alert: "参加に失敗しました"
@@ -77,8 +81,6 @@ class LobbyController < ApplicationController
   end
 
   def show
-    @room = Room.find(params[:id])
-
     if params[:back_room] == "true" && current_user.room_id == @room.id
       broadcast_back_room_from_game
     end
@@ -97,6 +99,19 @@ class LobbyController < ApplicationController
     end
   end
   private
+
+  def find_room
+    @room = Room.find(params[:id])
+    # ユーザーが現在のルームに参加しているか確認
+    unless current_user.room_id == @room.id
+      redirect_to lobby_index_path, alert: "このルームに参加していません"
+    end
+  end
+
+  def find_join_user
+    @join_user = User.where(room_id: @room.id, user_status: false).pluck(:name)
+  end
+
   def room_params
     params.require(:room).permit(:room_name, :password)
   end

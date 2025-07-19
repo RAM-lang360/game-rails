@@ -1,25 +1,24 @@
 class GamesController < ApplicationController
   before_action :find_room
   before_action :find_or_create_game, only: [ :good_ans, :draw ]
-  before_action :find_good_ans_game, only: [:good_ans, :post]
+  before_action :find_good_ans_game, only: [ :good_ans, :post ]
   def good_ans
     if params[:start_game] == "true" && current_user.id == @room.host_id
       broadcast_game_start
 
       puts "ゲーム開始のためのテーマを初期化します"
       @good_ans_game.initialize_themes!
-      @good_ans_game.update!(status: "playing",answers: [])
+      @good_ans_game.update!(status: "playing", answers: [])
       puts "ゲームが初期化されました: #{@good_ans_game.inspect}"
     end
 
-    #もし間違ってリログした時でもお題とアンサーを表示してくれる
+    # もし間違ってリログした時でもお題とアンサーを表示してくれる
     @current_theme=@good_ans_game.current_theme if @good_ans_game.current_theme.present?
     @answers = @good_ans_game.answers if @good_ans_game.answers.present?
 
     puts "ゲームの状態: #{@good_ans_game.status}"
     puts "現在のお題: #{@current_theme}"
     puts "回答一覧: #{@answers.inspect}"
-
   end
 
   def post
@@ -64,8 +63,11 @@ end
   end
   def find_room
     @room = Room.find(params[:id])
+    # ユーザーが現在のルームに参加しているか確認
+    unless current_user.room_id == @room.id
+      redirect_to lobby_index_path, alert: "このルームに参加していません"
+    end
   end
-
   def find_or_create_game
     @game = @room.good_ans_game || @room.create_good_ans_game!
   end

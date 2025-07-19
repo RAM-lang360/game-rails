@@ -1,10 +1,12 @@
 <div class="room-container" data-room-id="<%= @room.id %>">
+  <%= turbo_stream_from "join_user_channel" %>
   <h1>ルーム詳細</h1>
 
   <div class="room-details">
     <h2><%= @room.room_name %></h2>
     <p>ホスト: <%= @room.host.name %></p>
     <p>作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+    <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
   </div>
 
   <!-- クリック可能な画像エリア -->
