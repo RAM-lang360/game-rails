@@ -1,7 +1,5 @@
 <div class="room-container" data-good-ans-id="<%= @room.id %>">
   <div class="game-container">
-    <h1>ゲーム開始</h1>
-
     <div class="room-info">
       <h2>ルーム情報</h2>
       <p><strong>ルーム名:</strong> <%= @room.room_name %></p>
@@ -26,7 +24,6 @@
 
     <% if current_user.id == @room.host_id %>
       <div class="game-actions">
-        <button class="btn btn-primary">ゲーム開始</button>
         <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), data: { turbo: false } %>
       </div>
 
@@ -40,8 +37,8 @@
     <div class="message-form-container">
       <%= form_with(url: post_game_path, method: :post, local: false, data: { turbo: true }) do |form| %>
         <div class="form-group">
-          <%= form.label :content, "メッセージ:" %>
-          <%= form.text_area :content, rows: 5, class: "form-control" %>
+          <%= form.label :content, "回答を入力" %>
+          <%= form.text_area :content, required: true,rows: 5, class: "form-control" %>
         </div>
         <div class="form-actions">
           <%= form.submit "メッセージを送信", class: "btn btn-success" %>

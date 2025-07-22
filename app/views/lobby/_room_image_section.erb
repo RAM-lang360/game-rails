@@ -1,0 +1,44 @@
+<!-- クリック可能な画像エリア -->
+<div class="room-image-section">
+  <div class="game-buttons-container">
+    <!-- ゲーム1: 既存のゲーム -->
+    <div class="game-button-item">
+      <% if current_user && current_user.id == room.host_id %>
+        <%= link_to good_ans_game_path(room, start_game: true), 
+                    class: "game-link", 
+                    data: { 
+                      turbo: false,
+                      confirm: "ゲームを開始しますか？ルーム内の全員がゲーム画面に移動します。" 
+                    } do %>
+          <%= image_tag "test1.png", alt: "ゲーム開始", class: "game-start-image" %>
+          <p class="game-start-text">クリックしてゲーム開始</p>
+        <% end %>
+      <% else %>
+        <div class="game-disabled">
+          <%= image_tag "test1.png", alt: "ゲーム開始", class: "game-start-image disabled" %>
+          <p class="game-start-text disabled">ホストのみゲーム開始可能</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ゲーム2: 新しいゲーム -->
+    <div class="game-button-item">
+      <% if current_user && current_user.id == room.host_id %>
+        <%= link_to "#", 
+                    class: "game-link", 
+                    data: { 
+                      turbo: false,
+                      confirm: "ゲーム2を開始しますか？ルーム内の全員がゲーム画面に移動します。" 
+                    } do %>
+          <%= image_tag "test2.png", alt: "ゲーム2開始", class: "game-start-image" %>
+          <p class="game-start-text">ゲーム2を開始</p>
+        <% end %>
+      <% else %>
+        <div class="game-disabled">
+          <%= image_tag "test2.png", alt: "ゲーム2開始", class: "game-start-image disabled" %>
+          <p class="game-start-text disabled">ホストのみゲーム開始可能</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,29 +1,75 @@
-<div class="room-create-page">
-  <h1>ルーム作成</h1>
-  
-  <div class="user-info">
-    <h3><%= user_status %></h3>
+<div class="auth-page">
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <h1>With Board</h1>
+    <div class="hamburger-menu" onclick="toggleUserPopup()">
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+      <div class="hamburger-line"></div>
+    </div>
+    <div class="user-popup" id="userPopup">
+      <div class="user-info">
+        <%= user_status %>
+      </div>
+      <%= link_to "ログアウト", logout_path, 
+                method: :delete, 
+                class: "popup-logout",
+                data: { 
+                  turbo_method: :delete,
+                  confirm: "ログアウトしますか？" 
+                } %>
+    </div>
   </div>
 
-  <div class="room-form-container">
-    <%= form_with(model: @room, url: lobby_index_path, local: true, class: "room-form") do |f| %>
+  <div class="auth-container">
+    <div class="join-room-container">
+      <h1>ルーム作成</h1>
 
-      <div class="form-group">
-        <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
-        <%= f.text_field :room_name, class: 'form-control', required: true %>
-      </div>
+      <%= form_with(model: @room, url: create_room_path, local: true) do |f| %>
+        <% if @room.errors.any? %>
+          <div class="error-messages">
+            <ul>
+              <%= @room.errors.full_messages[0] %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="form-group">
+          <%= f.label :room_name, 'ルーム名', class: 'form-label' %>
+          <%= f.text_field :room_name, required: true, class: 'form-control' %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :password, 'パスワード', class: 'form-label' %>
-        <%= f.password_field :password, class: 'form-control', required: true %>
-      </div>
+        <div class="form-group">
+          <%= f.label :password, 'パスワード', class: 'form-label' %>
+          <%= f.password_field :password, required: true, class: 'form-control' %>
+        </div>
 
-      <div class="form-actions">
-        <%= f.submit '作成', class: 'btn btn-success' %>
-        <%= link_to 'キャンセル', lobby_index_path, class: 'btn btn-secondary' %>
+        <div class="form-actions">
+          <%= f.submit 'ルーム作成', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+
+      <div class="auth-links">
+        <%= link_to "ルーム一覧に戻る", lobby_index_path, class: "link-secondary" %>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
 
+<script>
 
+// ハンバーガーメニューの機能
+function toggleUserPopup() {
+  const popup = document.getElementById('userPopup');
+  popup.classList.toggle('show');
+}
+
+// ポップアップ外をクリックした時に閉じる
+document.addEventListener('click', function(event) {
+  const popup = document.getElementById('userPopup');
+  const hamburger = document.querySelector('.hamburger-menu');
+  
+  if (popup && !popup.contains(event.target) && !hamburger.contains(event.target)) {
+    popup.classList.remove('show');
+  }
+});
+</script>

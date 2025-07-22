@@ -23,4 +23,17 @@ class User < ApplicationRecord
       locals: { join_user: join_user }
     )
   end
+
+  def broadcast_join_user_content(room_id)
+    puts "ブロードキャスト参加者更新"
+    puts "現在のユーザーのルームID: #{self.room_id}"
+    join_user = User.where(room_id: room_id, user_status: false).pluck(:name)
+    puts "参加者: #{join_user.inspect}"
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "join_user_channel",
+      target: "join_user_content", # ターゲットのID
+      partial: "lobby/join_user_content",
+      locals: { join_user: join_user }
+    )
+  end
 end

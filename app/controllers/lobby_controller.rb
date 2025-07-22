@@ -11,15 +11,30 @@ class LobbyController < ApplicationController
     @room = Room.new
   end
 
-  def create
+  def create_room
     if Room.exists?(host_id: current_user.id)
       @room = Room.new(room_params)
-      @room.errors.add(:host_id, "はすでに他のルームのホストです")
+      @room.errors.add(:base, "あなたはすでに他のルームのホストです")
       render :new, status: :unprocessable_entity
       return
     end
-
-    @room = Room.new(room_params)
+    if current_user.room_id.present?
+      @room = Room.new(room_params)
+      @room.errors.add(:base, "あなたはすでに他のルームに参加しています")
+      render :new, status: :unprocessable_entity
+      return
+    end
+    # ルーム名が既に存在した時の処理
+    if Room.exists?(room_name: params[:room][:room_name])
+      @room = Room.new(room_params)
+      @room.errors.add(:base, "そのルームはすでに使用されています")
+      render :new, status: :unprocessable_entity
+      return
+    end
+    # ルームの作成
+    puts "ルームを作成します: #{params[:room][:room_name]}"
+    puts "ルームのパスワード: #{params[:room][:password]}"
+    @room = Room.new(room_name: params[:room][:room_name], password: params[:room][:password])
     @room.host_id = current_user.id if current_user
     if @room.save
       # ルーム保存後にユーザーのroom_idを更新
@@ -80,10 +95,11 @@ class LobbyController < ApplicationController
       puts "ルーム参加認証成功"
       @user = User.find_by(id: current_user.id)
       @user.room_id = @join_room.id
-
+       @user.user_status = false # 参加者として設定
       if @user.save
         puts "------------------------------------erjpi参加者を更新します"
-        @user.broadcast_join_user_content
+
+        @user.broadcast_join_user_content(@join_room.id)
         redirect_to lobby_path(@join_room), notice: "ルームに参加しました"
       else
         @rooms = Room.all
@@ -101,6 +117,8 @@ class LobbyController < ApplicationController
   end
 
   def show
+    @join_user = User.where(room_id: @room.id, user_status: false).pluck(:name)
+    puts "ルームID: #{@room.id}, 参加者: #{@join_user.inspect}"
     if params[:back_room] == "true" && current_user.room_id == @room.id
       broadcast_back_room_from_game
     end
@@ -128,11 +146,14 @@ class LobbyController < ApplicationController
     puts "ルームからのログアウト処理を開始します"
     @room = Room.find(params[:id])
     puts "現在のユーザーのルームID: #{current_user.room_id}, ルームID: #{@room.id}, ユーザーステータス: #{current_user.user_status}"
-    if current_user.room_id == @room.id
+    if current_user.room_id == @room.id && current_user.user_status == false
       @user = User.find_by(id: current_user.id)
       @user.room_id = nil
       if @user.save
         puts "ルームからのログアウト成功"
+        @user.broadcast_join_user_content(@room.id)
+        # ルームから退出した後、ロビーにリダイレクト
+        puts "ルームから退出しました"
         redirect_to lobby_index_path, notice: "ルームから退出しました"
       else
         puts "ルームからのログアウト失敗"

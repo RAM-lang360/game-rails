@@ -23,18 +23,14 @@
 
   <div class="container">
     <div class="room-container" data-room-id="<%= @room.id %>">
-      <div class="room-info-row">
-        <div class="room-header">
-          <h1>ゲーム一覧</h1>
-        </div>
-        <div class="room-details">
-          <div class="room-details-title">ルーム情報</div>
-          <div class="room-details-info">ルーム名: <%= @room.room_name %></div>
-          <div class="room-details-info">ルームID: <%= @room.id %></div>
-          <div class="room-details-info">ホスト: <%= @room.host.name %></div>
-          <div class="room-details-info">作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></div>
-          <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
-        </div>
+     
+      <h1>ゲーム一覧</h1>
+
+      <div class="room-details">
+        <h2><%= @room.room_name %></h2>
+        <p>ホスト: <%= @room.host.name %></p>
+        <p>作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+        <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
       </div>
 
       <!-- Room Image Section (Partial) -->
@@ -106,69 +102,6 @@
   
   .game-start-text.disabled {
     color: #6c757d;
-  }
-  
-  .room-info-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center; /* 両要素の中央揃え */
-    gap: 40px;
-    justify-content: center;
-    margin: 40px 0;
-  }
-
-  .room-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 260px;
-    height: auto;
-    background: #fff;
-    border: 3px solid #222;
-    border-radius: 20px;
-    font-size: 2rem;
-    font-weight: 500;
-    box-sizing: border-box;
-    padding: 32px 0;
-    margin-left: 80px; /* ← 追加：左側に余白を作る */
-  }
-
-  .room-details-title {
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #222;
-  letter-spacing: 1px;
-  text-align: center;
-}
-
-  .room-details-info {
-    font-size: 1rem;
-    margin: 6px 0;
-    color: #555;
-    letter-spacing: 0.5px;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .room-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 320px; /* 少し広げる */
-    max-width: 100%;
-    background: #f8f9fa;
-    border: 6px solid #d3d3d3;
-    border-radius: 20px;
-    padding: 24px 16px; /* 横余白も増やす */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    font-size: 15px;
-    box-sizing: border-box;
-    text-align: left;
-    height: auto;
-    overflow: hidden;
   }
 </style>
 
