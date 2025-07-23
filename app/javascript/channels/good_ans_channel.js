@@ -44,11 +44,20 @@ document.addEventListener('turbo:load', () => {
         }
         
         if (data.action === "show_answer") {
-          console.log("回答を表示する指示を受信しました。",data);
+          console.log("回答を表示する指示を受信しました。", data);
           const answerContentElement = document.getElementById(data.content_id);
           if (answerContentElement) {
-            answerContentElement.classList.remove("hidden");
+            answerContentElement.classList.remove("hidden"); // hiddenクラスを削除
+            answerContentElement.classList.add("visible");   // visibleクラスを追加
+            console.log("クラス変更後:", answerContentElement.className);
+          } else {
+            console.log("要素が見つかりません:", data.content_id);
           }
+        }
+
+        if (data.action === "redirect") {
+          console.log(`${data.url}にリダイレクト中...`);
+          window.location.href = data.url;
         }
       }
     });

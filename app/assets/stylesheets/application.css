@@ -576,7 +576,8 @@ body {
 
 .form-actions {
   display: flex;
-  gap: 16px;
+  width: 525px;
+  gap: 20px;
   justify-content: center;
   margin-top: 24px;
 }
@@ -895,6 +896,201 @@ body {
   font-size: 1rem;
 }
 
+/* 全体レイアウト */
+.game-page {
+  background: rgb(220, 150, 150);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 0;
+}
+
+/* ヘッダー */
+.game-header {
+  background: rgb(255, 0, 0);
+  width: 100%;
+  max-width: 600px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-radius: 12px 12px 0 0;
+  box-sizing: border-box;
+}
+
+/* タイトル */
+.game-title {
+  font-size: 2.2rem;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+/* ゲーム終了ボタン */
+.end-game-button {
+  background: #000;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background 0.2s;
+}
+.end-game-button:hover {
+  background: #333;
+}
+
+/* メッセージ部分 */
+.game-instruction {
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+  margin: 24px 0 16px 0;
+  font-weight: 500;
+}
+
+/* 問題表示エリア */
+.question-container {
+  background: #fff;
+  padding: 24px 20px;
+  margin: 0 0 24px 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 問題ラベル */
+.question-label {
+  font-size: 1.1rem;
+  color: #d00;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* 問題文 */
+.question-text {
+  font-size: 1.3rem;
+  color: #222;
+  text-align: center;
+  margin: 12px 0 0 0;
+  font-weight: 500;
+}
+
+/* 回答入力エリア */
+.answer-input-container {
+  background: #fff;
+  padding: 24px 20px;
+  margin: 0 0 24px 0;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* プレースホルダー的テキスト */
+.answer-placeholder {
+  font-size: 1rem;
+  color: #888;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* 回答入力フィールド */
+.answer-field,
+.answer-input-container input[type="text"],
+.answer-input-container textarea {
+  border: 2px solid #000;
+  background: transparent;
+  font-size: 1.2rem;
+  color: #222;
+  text-align: center;
+  width: 500px;
+  max-width: 100%;
+  height:40px;
+  outline: none;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  resize: none;
+}
+
+/* 解答入力フィールドに枠を追加 */
+.answer-field {
+  border: 2px solid #d00;
+  background: #fff;
+  font-size: 1.2rem;
+  color: #222;
+  text-align: center;
+  width: 100%;
+  outline: none;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  resize: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* 回答ボタン */
+.submit-answer-button {
+  background: #000;
+  color: #fff;
+  width: 80%;
+  max-width: 260px;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.submit-answer-button:hover {
+  background: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* ヘッダー右端ボタン配置 */
+.header-buttons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ルームに戻るボタン */
+.back-room-button {
+  color: #000;
+  border: 2px solid #000;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s;
+  cursor: pointer;
+  margin-left: 12px;
+}
+.back-room-button:hover {
+  background: #333;
+}
+
 /* Responsive design for room image section */
 @media (max-width: 1024px) {
   .game-button-item {
@@ -1041,4 +1237,13 @@ body {
 .room-form-container .btn-secondary {
   width: 100%;
   box-sizing: border-box;
+}
+
+.answer-buttons-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
 }

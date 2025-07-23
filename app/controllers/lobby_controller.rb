@@ -131,6 +131,7 @@ class LobbyController < ApplicationController
       redirect_to lobby_index_path, notice: "ルームを削除しました"
       # ページ遷移
       puts "---------------ルーム削除後のブロードキャストを実行します----------------"
+
       broadcast_back_room_to_lobby
     else
       redirect_to lobby_index_path, alert: "ルームの削除に失敗しました"

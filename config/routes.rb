@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   get "lobby/join_room", to: "lobby#join_room", as: :join_room
   post "lobby/create_room", to: "lobby#create_room", as: :create_room
   get "lobby/:id/good_ans", to: "games#good_ans", as: "good_ans_game"
-
+  get "lobby/:id/answer", to: "games#answer", as: :answer
+  get "lobby/:id/new_question", to: "games#new_question", as: :new_question
   # logout_roomルートをGETとDELETEの両方に対応
   get "lobby/:id/logout_room", to: "lobby#logout_room", as: :logout_room
   delete "lobby/:id/logout_room", to: "lobby#logout_room"

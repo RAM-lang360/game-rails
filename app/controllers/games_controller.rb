@@ -9,6 +9,7 @@ class GamesController < ApplicationController
       puts "ゲーム開始のためのテーマを初期化します"
       @good_ans_game.initialize_themes!
       @good_ans_game.update!(status: "playing", answers: [])
+      @good_ans_game.current_theme = GoodAnsGame.draw_theme!(@room.id)
       puts "ゲームが初期化されました: #{@good_ans_game.inspect}"
     end
 
@@ -19,8 +20,24 @@ class GamesController < ApplicationController
     puts "ゲームの状態: #{@good_ans_game.status}"
     puts "現在のお題: #{@current_theme}"
     puts "回答一覧: #{@answers.inspect}"
+
+    # もしnew_questionのリダイレクトだった時は以下を実行
+    if params[:latest_game] == "true" && current_user.id == @room.host_id
+      broadcast_game_start_from_answer
+      draw
+    end
   end
 
+  def answer
+    @good_ans_game = GoodAnsGame.find_by(room_id: @room.id)
+    # もし間違ってリログした時でもお題とアンサーを表示してくれる
+    @current_theme=@good_ans_game.current_theme if @good_ans_game.current_theme.present?
+    @answers = @good_ans_game.answers if @good_ans_game.answers.present?
+
+    puts "ゲームの状態: #{@good_ans_game.status}"
+    puts "現在のお題: #{@current_theme}"
+    puts "回答一覧: #{@answers.inspect}"
+  end
   def post
     if params[:content].blank?
       render json: { success: false, error: "メッセージが空です" }, status: :unprocessable_entity
@@ -36,7 +53,14 @@ class GamesController < ApplicationController
   def show_answer
   @content_id = params[:content_id]
   broadcast_answer_show
-end
+  render json: { success: true, content_id: @content_id }
+  end
+
+  # def new_question
+  #   puts "=== NEW QUESTION ACTION START ==="
+  #   broadcast_game_start_from_answer
+  #   draw
+  # end
 
   def draw
     puts "=== DRAW ACTION START ==="
@@ -83,8 +107,18 @@ end
       }
     )
   end
-
+ def broadcast_game_start_from_answer
+    ActionCable.server.broadcast(
+      "good_ans_channel_#{@room.id}",
+      {
+        action: "redirect",
+        message: "ゲーム画面に移動します",
+        url: good_ans_game_path(@room.id)
+      }
+    )
+  end
   def broadcast_draw
+    puts "ブロードキャストされてるよ"
     ActionCable.server.broadcast(
       "good_ans_channel_#{@room.id}",
       {

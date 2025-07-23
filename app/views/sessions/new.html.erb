@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-actions">
-          <%= form.submit "ログイン", class: "btn btn-primary" %>
+          <%= form.submit "ログイン", class: "login-button" %>
         </div>
       <% end %>
 
@@ -45,4 +45,25 @@
     </div>
   </div>
 </div>
+
+<style>
+  .session-container .form-actions {
+    text-align: center !important;
+    width: 100% !important;
+  }
+  
+  .session-container .login-button {
+    background-color: #007bff !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    display: inline-block !important;
+    width: 40% !important;
+    margin: 0 !important;
+    font-size: 18px !important;
+  }
+</style>
 

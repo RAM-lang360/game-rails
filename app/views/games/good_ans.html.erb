@@ -1,56 +1,64 @@
-<div class="room-container" data-good-ans-id="<%= @room.id %>">
-  <div class="game-container">
-    <div class="room-info">
-      <h2>ルーム情報</h2>
-      <p><strong>ルーム名:</strong> <%= @room.room_name %></p>
-      <p><strong>ホスト:</strong> <%= @room.host.name %></p>
-      <p><strong>ルームID:</strong> <%= @room.id %></p>
-      <p><strong>作成日時:</strong> <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+<div class="game-page" data-good-ans-id="<%= @room.id %>">
+  <div class="game-header">
+    <div class="game-title">
+      朝までそれ正解
     </div>
-
-    <%= display_users(@user_names) %>
-
-    <div class="current-user-info">
-      <h3>あなたの情報</h3>
-      <p><strong>ユーザー名:</strong> <%= current_user.name %></p>
-      <p><strong>参加状況:</strong>
-        <% if current_user.id == @room.host_id %>
-          <span class="host-badge">ホスト</span>
-        <% else %>
-          <span class="participant-badge">参加者</span>
-        <% end %>
-      </p>
-    </div>
-
-    <% if current_user.id == @room.host_id %>
-      <div class="game-actions">
-        <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), data: { turbo: false } %>
-      </div>
-
-      <div data-controller="toggle">
-        <button data-action="click->toggle#toggle">お題を表示</button>
-      </div>
-    <% end %>
-
-    <div data-toggle-target="content" id="theme"><%= @current_theme %></div>
-
-    <div class="message-form-container">
-      <%= form_with(url: post_game_path, method: :post, local: false, data: { turbo: true }) do |form| %>
-        <div class="form-group">
-          <%= form.label :content, "回答を入力" %>
-          <%= form.text_area :content, required: true,rows: 5, class: "form-control" %>
-        </div>
-        <div class="form-actions">
-          <%= form.submit "メッセージを送信", class: "btn btn-success" %>
-        </div>
+    <div class="header-buttons">
+      <%# <button class="end-game-button">ゲームをやめる</button> %>
+      <% if current_user.id == @room.host_id %>
+        <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), data: { turbo: false }, class: "back-room-button" %>
       <% end %>
-
-      <h4>回答一覧</h4>
-      <div class="answers-list">
-        <%= turbo_stream_from "answers" %>
-          <%= render partial: "answers", locals: { room_id: @room.id, answers: @answers, display_flag: false } %>
-          <%= button_to "自身の解答を表示", show_answer_path(id: @room.id, content_id: "answer_content_#{current_user.name}"), remote: true %>
-      </div>
     </div>
   </div>
+
+  <div class="game-instruction">
+    全員を納得させる答えを考えよう
+  </div>
+
+  <div class="question-container">
+    <div class="question-label">問題</div>
+    <div class="question-text" id="theme"><%= @current_theme %></div>
+  </div>
+
+  <div class="answer-input-container">
+    <div class="answer-placeholder">回答を入力してください</div>
+    <%= form_with(url: post_game_path, method: :post, local: false, data: { turbo: true }, id: "answer-form") do |form| %>
+      <%= form.text_area :content, required: true, rows: 3, class: "answer-field" %>
+      <div class="answer-buttons-row">
+        <%= form.submit "回答する", class: "submit-answer-button" %>
+        <% if current_user.id == @room.host_id %>
+          <button type="button" class="submit-answer-button show-theme-button" data-controller="toggle" data-action="click->toggle#toggle">お題を変える</button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+
+<script>
+document.addEventListener("turbo:submit-end", function(e) {
+  if (e.target.id === "answer-form" && e.detail.success) {
+    window.location.href = "<%= answer_path %>";
+  }
+});
+</script>
+
+<style>
+.answer-buttons-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.show-theme-button {
+  background: #d00; /* 例: 赤色 */
+  color: #fff;
+}
+.show-theme-button:hover {
+  background: #a00;
+}
+</style>
+

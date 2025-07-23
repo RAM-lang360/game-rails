@@ -1,27 +1,100 @@
-<div class="answers-list" id="answers">
-  
+<div class="an" id="answers">
   <%# 回答が配列であり、かつ空でない場合にのみ表示 %>
   <% if answers.is_a?(Array) && answers.present? %>
-  <div>回答者数: <%= answers.size %></div>
-    <% answers.each_with_index do |answer_hash, index| %>
-      <% user_name = answer_hash.keys.first %>
-      <% answer_content = answer_hash.values.first %>
-      <div class="answer-item" id="answer_item_<%= index %>_<%= user_name.parameterize %>">
-        <p>
-          <strong><%= user_name %>:</strong>
-            <div class="hidden" id="answer_content_<%= user_name.parameterize %>"><%= answer_content %></div>
-        </p>
-      </div>
-    <% end %>
+    <div class="answers-count">回答者数: <%= answers.size %></div>
+    <div class="answers-list" id="answers">
+      <% answers.each_with_index do |answer_hash, index| %>
+        <% user_name = answer_hash.keys.first %>
+        <% answer_content = answer_hash.values.first %>
+        <div class="answer-item" id="answer_item_<%= index %>_<%= user_name.parameterize %>">
+          <div class="answer-content hidden" id="answer_content_<%= user_name.parameterize %>">
+            <%= answer_content %>
+          </div>
+          <div class="answer-user">回答者: <%= user_name %></div>
+        </div>
+      <% end %>
+    </div>
   <% else %>
-    <%# 回答がまだない場合にのみ表示されるメッセージ %>
-    <p>まだ回答がありません。</p>
+    <div class="answers-list" id="answers">
+      <p class="no-answers">まだ回答がありません。</p>
+    </div>
   <% end %>
-
 </div>
 
 <style>
-  .hidden {
-    display: none;
+.answers-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 22px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+.answers-count, .no-answers {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.answer-item {
+  background: rgb(200, 200, 200);
+  border-radius: 18px;
+  min-height: 180px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.answer-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #222;
+  text-align: center;
+  padding: 22px 16px 12px 16px;
+  word-break: break-word;
+  font-weight: 500;
+  min-height: 120px;
+  visibility: hidden; /* ← デフォルトで非表示 */
+}
+.answer-content.visible {
+  visibility: visible !important; /* ← !importantを追加して優先度を上げる */
+}
+.answer-user {
+  background: #fff;
+  color: #444;
+  font-size: 0.98rem;
+  text-align: center;
+  padding: 8px 0 7px 0;
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin-top: auto; /* ← 常に下に押し出す */
+}
+.hidden {
+  visibility: hidden !important; /* ← こちらに変更 */
+}
+@media (max-width: 900px) {
+  .answer-item {
+    width: 45vw;
+    min-width: 160px;
+    max-width: 100%;
   }
+}
+@media (max-width: 600px) {
+  .answer-item {
+    width: 95vw;
+    min-width: 0;
+  }
+}
 </style>

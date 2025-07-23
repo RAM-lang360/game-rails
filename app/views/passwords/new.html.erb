@@ -1,28 +1,93 @@
-<div class="auth-page">
-  <!-- Top Banner -->
-  <div class="top-banner">
-    <h1>With Board</h1>
-  </div>
+<h1>パスワードリセット</h1>
 
-  <div class="auth-container">
-    <div class="password-container">
-      <h1>パスワードリセット</h1>
-
-      <%= form_with url: passwords_path, local: true do |form| %>
-        <div class="form-group">
-          <%= form.label :email, "メールアドレス", class: "form-label" %>
-          <%= form.email_field :email, required: true, class: "form-control", 
-                              placeholder: "登録時のメールアドレスを入力してください" %>
-        </div>
-
-        <div class="form-actions">
-          <%= form.submit "パスワードリセット", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-
-      <div class="password-links">
-        <%= link_to "ログインに戻る", new_session_path %>
-      </div>
+<div class="password-reset-container">
+  <%= form_with url: passwords_path, local: true do |form| %>
+    <div class="form-group">
+      <%= form.label :email, "メールアドレス", class: "form-label" %>
+      <%= form.email_field :email, required: true, class: "form-control", 
+                          placeholder: "登録時のメールアドレスを入力してください" %>
     </div>
+
+    <div class="form-actions">
+      <%= form.submit "パスワードリセット", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <div class="signin-links">
+    <%= link_to "ログインに戻る", new_session_path %>
   </div>
 </div>
+
+<style>
+.password-reset-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 40px 32px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border: 2px solid #2196f3;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #26344a;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.btn.btn-primary {
+  background: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: bold;
+}
+
+.btn.btn-primary:hover {
+  background: #1769aa;
+}
+
+.signin-links {
+  text-align: left;
+  margin-top: 32px;
+}
+
+.signin-links a {
+  color: #2196f3;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+</style>

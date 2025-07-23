@@ -1,0 +1,19 @@
+<div class="room-container" data-good-ans-id="<%= @room.id %>">
+    <% if current_user.id==@room.host_id %>
+    <%= link_to "ルームに戻る", lobby_path(@room, back_room: true), data: { turbo: false }, class: "back-room-button" %>
+    <% end %>
+<h2>お題:<%= @good_ans_game.current_theme  %></h2>
+<h4>回答一覧</h4>
+      <div class="answers-list">
+        <%= turbo_stream_from "answers" %>
+          <%= render partial: "answers", locals: { room_id: @room.id, answers: @answers, display_flag: false } %>
+          <turbo-frame id="user-answer-frame">
+            <%= button_to "自身の解答を表示", show_answer_path(id: @room.id, content_id: "answer_content_#{current_user.name}"), remote: true %>
+          </turbo-frame>
+      </div>
+
+<div class="form-actions">
+    <% if current_user.id == @room.host_id %>
+        <%= link_to "次の問題", good_ans_game_path(@room, latest_game: true), class: "btn btn-success", data:{ turbo: false } %>
+    <% end %>
+</div>
