@@ -8,7 +8,7 @@
     </div>
     <div class="current-theme">お題:<%= @good_ans_game.current_theme  %></div>
     <turbo-frame class="display-answers-button" id="user-answer-frame">
-      <%= button_to "自身の解答を表示", show_answer_path(id: @room.id, content_id: "answer_content_#{current_user.name}"), remote: true %>
+      <%= button_to "自身の解答を表示", show_answer_path(id: @room.id, content_id: "answer_content_#{current_user.id}"), remote: true %>
     </turbo-frame>
     <h4>回答一覧</h4>
       <%= turbo_stream_from "answers" %>

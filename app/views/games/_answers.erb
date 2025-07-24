@@ -4,13 +4,13 @@
     <div class="answers-count">回答者数: <%= answers.size %></div>
     <div class="answers-list" id="answers">
       <% answers.each_with_index do |answer_hash, index| %>
-        <% user_name = answer_hash.keys.first %>
+        <% user_id =answer_hash.keys.first %>
         <% answer_content = answer_hash.values.first %>
-        <div class="answer-item" id="answer_item_<%= index %>_<%= user_name.parameterize %>">
-          <div class="answer-content hidden" id="answer_content_<%= user_name.parameterize %>">
+        <div class="answer-item" id="answer_item_<%= index %>_<%= user_id.parameterize %>">
+          <div class="answer-content hidden" id="answer_content_<%= user_id.parameterize %>">
             <%= answer_content %>
           </div>
-          <div class="answer-user">回答者: <%= user_name %></div>
+          <div class="answer-user">回答者: <%= User.find(user_id).name %></div>
         </div>
       <% end %>
     </div>

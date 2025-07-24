@@ -5,12 +5,12 @@ class GamesController < ApplicationController
   def good_ans
     if params[:start_game] == "true" && current_user.id == @room.host_id
       broadcast_game_start
-
       puts "ゲーム開始のためのテーマを初期化します"
       @good_ans_game.initialize_themes!
       @good_ans_game.update!(status: "playing", answers: [])
-      @good_ans_game.current_theme = GoodAnsGame.draw_theme!(@room.id)
+      # @good_ans_game.current_theme = GoodAnsGame.draw_theme!(@room.id)
       puts "ゲームが初期化されました: #{@good_ans_game.inspect}"
+
     end
 
     # もし間違ってリログした時でもお題とアンサーを表示してくれる
@@ -42,10 +42,10 @@ class GamesController < ApplicationController
     if params[:content].blank?
       render json: { success: false, error: "メッセージが空です" }, status: :unprocessable_entity
     else
-      user_name = current_user.name
+      user_id = current_user.id
       content = params[:content]
 
-      if @good_ans_game.add_user_answer_to_jsonb(user_name, content)
+      if @good_ans_game.add_user_answer_to_jsonb(user_id, content)
       end
     end
   end
