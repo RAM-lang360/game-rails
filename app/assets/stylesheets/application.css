@@ -911,7 +911,7 @@ body {
 .game-header {
   background: rgb(255, 0, 0);
   width: 100%;
-  max-width: 600px;
+  max-width: 1500px;
   height: 64px;
   display: flex;
   align-items: center;
@@ -1178,6 +1178,7 @@ body {
   }
   
   .room-container {
+    max-width: 1500px;
     padding: 20px;
     margin: 10px;
   }

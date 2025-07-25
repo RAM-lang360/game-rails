@@ -2,7 +2,7 @@ class GoodAnsGame < ApplicationRecord
   belongs_to :room
 
   validates :status, inclusion: { in: %w[waiting playing finished] }
-  
+
 
 def add_user_answer_to_jsonb(user_name, content)
   if content.blank?
@@ -35,7 +35,7 @@ end
   def draw_theme!
     return nil if themes.empty?
 
-    #answersのリセット
+    # answersのリセット
     self.answers = []
     # themesからランダムに1つ選び、current_themeに設定
     drawn = themes.shift
@@ -56,11 +56,12 @@ end
 
 
   def broadcast_answer
+    puts "モデルテスト #{self.answers}"
     Turbo::StreamsChannel.broadcast_replace_to(
-      "answers", 
+      "answers",
       target: "answers", # ターゲットのID
       partial: "games/answers",
-      locals: { room_id: self.room_id, answers: self.answers}  # パーシャルに渡す変数
+      locals: { room_id: self.room_id, answers: self.answers }  # パーシャルに渡す変数
     )
   end
 end

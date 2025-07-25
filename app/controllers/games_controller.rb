@@ -8,7 +8,7 @@ class GamesController < ApplicationController
       puts "ゲーム開始のためのテーマを初期化します"
       @good_ans_game.initialize_themes!
       @good_ans_game.update!(status: "playing", answers: [])
-      # @good_ans_game.current_theme = GoodAnsGame.draw_theme!(@room.id)
+      @good_ans_game.draw_theme!
       puts "ゲームが初期化されました: #{@good_ans_game.inspect}"
 
     end
