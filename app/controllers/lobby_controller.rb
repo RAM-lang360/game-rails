@@ -140,6 +140,7 @@ class LobbyController < ApplicationController
 
   def logout
     Current.session&.destroy
+    logout_room if current_user.room_id.present?
     redirect_to sessions_path, notice: "ログアウトしました"
   end
 

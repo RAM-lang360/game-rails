@@ -46,8 +46,9 @@ document.addEventListener('turbo:load', () => {
           
           // 新しいルームアイテムを追加
           const roomItem = document.createElement('div');
-          roomItem.className = 'room-item';
+          roomItem.className = 'room-item room-clickable';
           roomItem.id = `room-${data.room_id}`;
+          roomItem.setAttribute('data-room-name', data.room_name); // ← この行を追加
           roomItem.innerHTML = `
             <div class="room-card">
               <h3 class="room-name">${data.room_name}</h3>
@@ -64,10 +65,11 @@ document.addEventListener('turbo:load', () => {
       },
 
       handleRoomDeletion(data) {
-        console.log("ルーム削除を処理:", data.room_name);
+        console.log("ルーム削除を処理:", data.room_id);
         
         // 削除されたルームを画面から除去
         const roomItem = document.getElementById(`room-${data.room_id}`);
+        console.log("削除対象のルームアイテム:", roomItem);
         if (roomItem) {
           roomItem.remove();
           console.log("ルームアイテムを削除しました:", data.room_name);

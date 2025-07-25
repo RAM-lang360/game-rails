@@ -7,7 +7,7 @@
   <% else %>
     <div class="rooms">
       <% rooms.each do |room| %>
-        <div class="room-item" onclick="joinRoom('<%= room.room_name %>')">
+        <div class="room-item" data-room-name="<%= room.room_name %>" id="room-<%= room.id %>" class="room-clickable">
           <%= room_card(room) %>
         </div>
       <% end %>
@@ -15,3 +15,43 @@
   <% end %>
   </div>
 </section>
+
+<script>
+function setupRoomClickEvents() {
+  console.log("ルームクリックイベントを設定中...");
+  
+  // 既存のイベントリスナーを削除（重複を防ぐため）
+  document.removeEventListener('click', handleRoomClick);
+  
+  // 新しいイベントリスナーを追加
+  document.addEventListener('click', handleRoomClick);
+}
+
+function handleRoomClick(e) {
+  console.log("クリックされた要素:", e.target);
+  
+  const roomItem = e.target.closest('.room-item');
+  console.log("ルームアイテム", roomItem);
+  
+  if (roomItem) {
+    let roomName = roomItem.dataset.roomName;
+    
+    // data-room-nameがない場合、.room-nameから取得
+    if (!roomName) {
+      const roomNameElement = roomItem.querySelector('.room-name');
+      roomName = roomNameElement ? roomNameElement.textContent.trim() : null;
+    }
+    
+    if (roomName) {
+      console.log("ルーム名:", roomName);
+      window.location.href = `/lobby/join_room?room_name=${encodeURIComponent(roomName)}`;
+    } else {
+      console.log("ルーム名が取得できません");
+    }
+  }
+}
+
+// DOMContentLoadedとturbo:loadの両方でイベントを設定
+document.addEventListener('DOMContentLoaded', setupRoomClickEvents);
+document.addEventListener('turbo:load', setupRoomClickEvents);
+</script>

@@ -1,7 +1,7 @@
 module LobbyHelper
   # ルームカードを表示するヘルパー
   def room_card(room)
-    content_tag :div, class: "room-card" do
+    content_tag :div, class: "room-card", data: { room_name: room.room_name } do
       concat content_tag(:h3, room.room_name, class: "room-name")
       concat content_tag(:p, "ホスト: #{room_host_name(room)}", class: "room-host")
       concat content_tag(:p, "作成日時: #{format_datetime(room.created_at)}", class: "room-created-at")
