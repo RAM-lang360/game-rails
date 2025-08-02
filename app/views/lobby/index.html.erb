@@ -39,8 +39,8 @@
 
   <!-- Bottom Buttons -->
   <div class="bottom-buttons">
-    <%= link_to '部屋を作る', new_lobby_path, class: 'create-room-button' %>
-    <%= link_to '部屋に入る', join_room_path, class: 'enter-room-button' %>
+    <%= link_to '部屋を作る', new_lobby_path, class: 'create-room-button', data: { turbo: false } %>
+    <%= link_to '部屋に入る', join_room_path, class: 'enter-room-button', data: { turbo: false } %>
   </div>
 </div>
 

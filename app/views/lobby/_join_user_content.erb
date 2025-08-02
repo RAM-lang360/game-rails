@@ -1,4 +1,4 @@
-<div class="room-details-info" id="join_user_content">
+<div class="room-details-users" id="join_user_content">
   <p>参加者: 
     <% if join_user.present? %>
       <% join_user.each do |user| %>
@@ -9,3 +9,15 @@
     <% end %>
   </p>
   </div>
+
+  <style>
+    .room-details-users {
+    font-size: 4rem !important;
+    margin: 6px 0;
+    color: #555;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  </style>

@@ -29,8 +29,8 @@
         </div>
         <div class="room-details">
           <div class="room-details-title">ルーム情報</div>
-          <div class="room-details-info">ルーム名: <%= @room.room_name %></div>
-          <div class="room-details-info">ルームID: <%= @room.id %></div>
+          <div class="room-details-imp">ルーム名: <%= @room.room_name %></div>
+          <div class="room-details-imp">パスワード: <%= @room.password %></div>
           <div class="room-details-info">ホスト: <%= @room.host.name %></div>
           <div class="room-details-info">作成日時: <%= @room.created_at.strftime("%Y年%m月%d日 %H:%M") %></div>
           <%= render partial: "join_user_content", locals: { join_user: @join_user } %>
@@ -146,6 +146,16 @@
     font-size: 1rem;
     margin: 6px 0;
     color: #555;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .room-details-imp {
+    font-size: 1.2rem;
+    margin: 6px 0;
+    color: #333;
+    font-weight: bold;
     letter-spacing: 0.5px;
     display: flex;
     justify-content: space-between;
