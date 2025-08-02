@@ -27,7 +27,7 @@
       <div class="answer-buttons-row">
         <%= form.submit "回答する", class: "submit-answer-button" %>
         <% if current_user.id == @room.host_id %>
-          <button type="button" class="submit-answer-button show-theme-button" data-controller="toggle" data-action="click->toggle#toggle">お題を変える</button>
+          <button type="button" class="submit-answer-button show-theme-button" id="change-theme-btn">お題を変える</button>
         <% end %>
       </div>
     <% end %>
@@ -39,6 +39,35 @@
 document.addEventListener("turbo:submit-end", function(e) {
   if (e.target.id === "answer-form" && e.detail.success) {
     window.location.href = "<%= answer_path %>";
+  }
+});
+
+// お題を変えるボタンのクリックイベント
+document.addEventListener('DOMContentLoaded', function() {
+  const changeThemeBtn = document.getElementById('change-theme-btn');
+  if (changeThemeBtn) {
+    changeThemeBtn.addEventListener('click', function() {
+      fetch('<%= draw_path(@room) %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('お題を変更しました');
+          // ActionCableで新しいテーマが送信されるので、少し待ってからリロード
+          setTimeout(() => {
+            location.reload();
+          }, 500);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
   }
 });
 </script>
