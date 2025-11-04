@@ -27,7 +27,6 @@
 - 認証: has_secure_password, bcrypt
 - フロント: Turbo, Stimulus, ActionCable
 - テスト: RSpec
-- CI/CD: GitHub Actions など
 
 ## システム構成図（簡易テキスト図）
 
